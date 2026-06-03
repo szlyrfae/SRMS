@@ -1,0 +1,494 @@
+/* ======================================== */
+/* EVENT LIST PAGE STYLES */
+/* With Sidebar Same as Dashboard */
+/* ======================================== */
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Segoe UI', 'Helvetica Neue', 'Poppins', sans-serif;
+    background: #f5efe7;
+    color: #4a3b2f;
+}
+
+/* ======================================== */
+/* TOP HEADER */
+/* ======================================== */
+.dashboard {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+.top-header {
+    background: #ffffff;
+    padding: 0.8rem 2rem;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    border-bottom: 1px solid #e8dfd5;
+}
+
+.header-right {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.vertical-divider {
+    width: 1px;
+    height: 30px;
+    background: #e8dfd5;
+}
+
+.customer-info {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.customer-name {
+    color: #6b5b4f;
+    font-weight: 500;
+}
+
+.customer-name i {
+    margin-right: 0.3rem;
+    color: #d4c0a8;
+}
+
+.logout-link {
+    color: #b87c5a;
+    text-decoration: none;
+    transition: color 0.2s;
+}
+
+.logout-link i {
+    margin-right: 0.3rem;
+}
+
+.logout-link:hover {
+    color: #d4a373;
+}
+
+/* ======================================== */
+/* MAIN LAYOUT - SIDEBAR KIRI */
+/* ======================================== */
+.main-layout {
+    display: flex;
+    flex: 1;
+}
+
+/* Sidebar Kiri */
+.sidebar {
+    width: 280px;
+    background: #ffffff;
+    min-height: calc(100vh - 55px);
+    display: flex;
+    flex-direction: column;
+}
+
+/* Logo Section */
+.logo-section {
+    padding: 2rem 1rem;
+    text-align: center;
+    border-bottom: 1px solid #f5efe7;
+}
+
+.logo-section h2 {
+    font-size: 1.4rem;
+    font-weight: 700;
+    color: #5e4b3a;
+    letter-spacing: 1px;
+}
+
+.logo-sub {
+    font-size: 0.7rem;
+    font-weight: 500;
+    color: #bcab99;
+    letter-spacing: 2px;
+    margin-top: 0.2rem;
+}
+
+/* Sidebar Navigation */
+.sidebar-nav {
+    padding: 1.5rem 0;
+}
+
+.sidebar-nav ul {
+    list-style: none;
+}
+
+.sidebar-nav .nav-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 0.8rem 1.5rem;
+    margin: 0.2rem 0;
+    cursor: pointer;
+    transition: all 0.2s;
+    color: #8c7a6b;
+    font-weight: 500;
+}
+
+.sidebar-nav .nav-item:hover {
+    background: #f5efe7;
+    color: #b87c5a;
+}
+
+.sidebar-nav .nav-item.active {
+    background: #f5efe7;
+    color: #b87c5a;
+    border-right: 3px solid #d4c0a8;
+}
+
+.nav-icon {
+    font-size: 1.2rem;
+    width: 28px;
+    text-align: center;
+}
+
+.nav-text {
+    font-size: 0.9rem;
+}
+
+/* Vertical Divider Line */
+.vertical-divider-line {
+    width: 1px;
+    background: #e8dfd5;
+    margin: 1rem 0;
+}
+
+/* Content Area Kanan */
+.content-area {
+    flex: 1;
+    padding: 2rem;
+    overflow-y: auto;
+}
+
+/* ======================================== */
+/* PAGE HEADER */
+/* ======================================== */
+.page-header {
+    margin-bottom: 2rem;
+}
+
+.page-header h1 {
+    font-size: 1.8rem;
+    color: #6b5b4f;
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.page-header h1 i {
+    color: #d4c0a8;
+}
+
+.page-header p {
+    color: #bcab99;
+    margin-top: 0.3rem;
+}
+
+/* ======================================== */
+/* EMPTY STATE */
+/* ======================================== */
+.empty-state {
+    text-align: center;
+    padding: 4rem 2rem;
+    background: #ffffff;
+    border-radius: 20px;
+    border: 1px solid #e8dfd5;
+}
+
+.empty-state i {
+    font-size: 4rem;
+    color: #e8dfd5;
+    margin-bottom: 1rem;
+}
+
+.empty-state h3 {
+    font-size: 1.2rem;
+    color: #6b5b4f;
+    margin-bottom: 0.5rem;
+}
+
+.empty-state p {
+    color: #bcab99;
+    margin-bottom: 1.5rem;
+}
+
+.btn-primary {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    background: #d4c0a8;
+    color: #5e4b3a;
+    text-decoration: none;
+    padding: 0.7rem 1.5rem;
+    border-radius: 40px;
+    font-weight: 500;
+    transition: all 0.2s;
+}
+
+.btn-primary:hover {
+    background: #c8b294;
+    transform: translateY(-1px);
+}
+
+/* ======================================== */
+/* EVENTS GRID */
+/* ======================================== */
+.events-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+    gap: 1.5rem;
+}
+
+/* Event Card */
+.event-card {
+    background: #ffffff;
+    border-radius: 16px;
+    padding: 1.2rem;
+    border: 1px solid #e8dfd5;
+    transition: all 0.3s ease;
+    position: relative;
+}
+
+.event-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
+    border-color: #d4c0a8;
+}
+
+/* Event Status Badge */
+.event-status {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    padding: 0.2rem 0.6rem;
+    border-radius: 20px;
+    font-size: 0.7rem;
+    font-weight: 600;
+}
+
+.event-status.upcoming {
+    background: #e3f2fd;
+    color: #1565c0;
+}
+
+.event-status.ongoing {
+    background: #fff3e0;
+    color: #e65100;
+}
+
+.event-status.completed {
+    background: #e8f5e9;
+    color: #2e7d32;
+}
+
+.event-status.cancelled {
+    background: #ffebee;
+    color: #c62828;
+}
+
+/* Event Name */
+.event-name {
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: #5e4b3a;
+    margin-bottom: 0.8rem;
+    padding-right: 80px;
+}
+
+/* Event Details */
+.event-details p {
+    font-size: 0.85rem;
+    color: #8c7a6b;
+    margin: 0.4rem 0;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.event-details p i {
+    width: 18px;
+    color: #d4c0a8;
+    font-size: 0.8rem;
+}
+
+/* Event Description */
+.event-description {
+    font-size: 0.8rem;
+    color: #bcab99;
+    margin: 0.5rem 0;
+    line-height: 1.4;
+}
+
+/* Event Actions Buttons */
+.event-actions {
+    display: flex;
+    gap: 0.8rem;
+    margin-top: 1rem;
+    padding-top: 0.8rem;
+    border-top: 1px solid #f5efe7;
+}
+
+.btn-details,
+.btn-delete {
+    flex: 1;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    padding: 0.5rem;
+    border-radius: 10px;
+    text-decoration: none;
+    font-size: 0.8rem;
+    font-weight: 500;
+    transition: all 0.2s;
+    cursor: pointer;
+    border: none;
+}
+
+.btn-details {
+    background: #f5efe7;
+    color: #6b5b4f;
+}
+
+.btn-details:hover {
+    background: #e8dfd5;
+    transform: translateY(-1px);
+}
+
+.btn-delete {
+    background: #ffebee;
+    color: #c62828;
+}
+
+.btn-delete:hover {
+    background: #ffcdd2;
+    transform: translateY(-1px);
+}
+
+/* ======================================== */
+/* RESPONSIVE DESIGN */
+/* ======================================== */
+@media (max-width: 768px) {
+    .sidebar {
+        width: 240px;
+    }
+    
+    .content-area {
+        padding: 1.5rem;
+    }
+    
+    .page-header h1 {
+        font-size: 1.4rem;
+    }
+    
+    .events-grid {
+        grid-template-columns: 1fr;
+        gap: 1rem;
+    }
+}
+
+@media (max-width: 600px) {
+    .main-layout {
+        flex-direction: column;
+    }
+    
+    .sidebar {
+        width: 100%;
+        min-height: auto;
+        flex-direction: row;
+        align-items: center;
+        justify-content: space-between;
+        padding: 0.5rem 1rem;
+        border-bottom: 1px solid #e8dfd5;
+    }
+    
+    .vertical-divider-line {
+        display: none;
+    }
+    
+    .logo-section {
+        padding: 0.5rem;
+        border-bottom: none;
+        text-align: left;
+    }
+    
+    .logo-section h2 {
+        font-size: 1rem;
+    }
+    
+    .logo-sub {
+        font-size: 0.6rem;
+    }
+    
+    .sidebar-nav ul {
+        display: flex;
+        gap: 0.5rem;
+    }
+    
+    .sidebar-nav .nav-item {
+        padding: 0.5rem 0.8rem;
+        border-radius: 8px;
+    }
+    
+    .sidebar-nav .nav-item.active {
+        border-right: none;
+        background: #f5efe7;
+    }
+    
+    .nav-text {
+        display: none;
+    }
+    
+    .nav-icon {
+        font-size: 1.2rem;
+        margin: 0;
+    }
+    
+    .top-header {
+        justify-content: center;
+    }
+    
+    .event-card {
+        padding: 1rem;
+    }
+    
+    .event-name {
+        font-size: 1rem;
+        padding-right: 70px;
+    }
+}
+
+@media (max-width: 480px) {
+    .content-area {
+        padding: 1rem;
+    }
+    
+    .event-actions {
+        flex-direction: column;
+        gap: 0.5rem;
+    }
+    
+    .btn-details,
+    .btn-delete {
+        padding: 0.6rem;
+    }
+    
+    .empty-state {
+        padding: 2rem 1rem;
+    }
+    
+    .empty-state i {
+        font-size: 3rem;
+    }
+}

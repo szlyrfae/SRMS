@@ -1,0 +1,486 @@
+/* ======================================== */
+/* ADD EVENT PAGE STYLES */
+/* With Sidebar Same as Dashboard */
+/* ======================================== */
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Segoe UI', 'Helvetica Neue', 'Poppins', sans-serif;
+    background: #f5efe7;
+    color: #4a3b2f;
+}
+
+/* ======================================== */
+/* TOP HEADER */
+/* ======================================== */
+.dashboard {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+.top-header {
+    background: #ffffff;
+    padding: 0.8rem 2rem;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    border-bottom: 1px solid #e8dfd5;
+}
+
+.header-right {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.vertical-divider {
+    width: 1px;
+    height: 30px;
+    background: #e8dfd5;
+}
+
+.customer-info {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.customer-name {
+    color: #6b5b4f;
+    font-weight: 500;
+}
+
+.customer-name i {
+    margin-right: 0.3rem;
+    color: #d4c0a8;
+}
+
+.logout-link {
+    color: #b87c5a;
+    text-decoration: none;
+    transition: color 0.2s;
+}
+
+.logout-link i {
+    margin-right: 0.3rem;
+}
+
+.logout-link:hover {
+    color: #d4a373;
+}
+
+/* ======================================== */
+/* MAIN LAYOUT - SIDEBAR KIRI */
+/* ======================================== */
+.main-layout {
+    display: flex;
+    flex: 1;
+}
+
+/* Sidebar Kiri */
+.sidebar {
+    width: 280px;
+    background: #ffffff;
+    min-height: calc(100vh - 55px);
+    display: flex;
+    flex-direction: column;
+}
+
+/* Logo Section */
+.logo-section {
+    padding: 2rem 1rem;
+    text-align: center;
+    border-bottom: 1px solid #f5efe7;
+}
+
+.logo-section h2 {
+    font-size: 1.4rem;
+    font-weight: 700;
+    color: #5e4b3a;
+    letter-spacing: 1px;
+}
+
+.logo-sub {
+    font-size: 0.7rem;
+    font-weight: 500;
+    color: #bcab99;
+    letter-spacing: 2px;
+    margin-top: 0.2rem;
+}
+
+/* Sidebar Navigation */
+.sidebar-nav {
+    padding: 1.5rem 0;
+}
+
+.sidebar-nav ul {
+    list-style: none;
+}
+
+.sidebar-nav .nav-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 0.8rem 1.5rem;
+    margin: 0.2rem 0;
+    cursor: pointer;
+    transition: all 0.2s;
+    color: #8c7a6b;
+    font-weight: 500;
+}
+
+.sidebar-nav .nav-item:hover {
+    background: #f5efe7;
+    color: #b87c5a;
+}
+
+.sidebar-nav .nav-item.active {
+    background: #f5efe7;
+    color: #b87c5a;
+    border-right: 3px solid #d4c0a8;
+}
+
+.nav-icon {
+    font-size: 1.2rem;
+    width: 28px;
+    text-align: center;
+}
+
+.nav-text {
+    font-size: 0.9rem;
+}
+
+/* Vertical Divider Line */
+.vertical-divider-line {
+    width: 1px;
+    background: #e8dfd5;
+    margin: 1rem 0;
+}
+
+/* Content Area Kanan */
+.content-area {
+    flex: 1;
+    padding: 2rem;
+    overflow-y: auto;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+/* ======================================== */
+/* FORM CARD */
+/* ======================================== */
+.form-card {
+    background: #ffffff;
+    border-radius: 24px;
+    padding: 2rem;
+    max-width: 600px;
+    width: 100%;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+    border: 1px solid #e8dfd5;
+}
+
+.form-header {
+    text-align: center;
+    margin-bottom: 1.5rem;
+}
+
+.form-header i {
+    font-size: 2.5rem;
+    color: #d4c0a8;
+    margin-bottom: 0.5rem;
+}
+
+.form-header h1 {
+    font-size: 1.5rem;
+    color: #6b5b4f;
+    margin-bottom: 0.3rem;
+}
+
+.form-header p {
+    font-size: 0.85rem;
+    color: #bcab99;
+}
+
+/* ======================================== */
+/* MESSAGE ALERTS */
+/* ======================================== */
+.message {
+    padding: 0.8rem 1rem;
+    border-radius: 12px;
+    margin-bottom: 1.5rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.9rem;
+}
+
+.message.success {
+    background: #e8f5e9;
+    color: #2e7d32;
+    border-left: 4px solid #2e7d32;
+}
+
+.message.error {
+    background: #ffebee;
+    color: #c62828;
+    border-left: 4px solid #c62828;
+}
+
+.message i {
+    font-size: 1.1rem;
+}
+
+/* ======================================== */
+/* FORM STYLES */
+/* ======================================== */
+.add-event-form {
+    display: flex;
+    flex-direction: column;
+    gap: 1.2rem;
+}
+
+.form-group {
+    width: 100%;
+}
+
+.form-group label {
+    display: block;
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: #6b5b4f;
+    margin-bottom: 0.4rem;
+}
+
+.form-group label i {
+    margin-right: 0.3rem;
+    color: #d4c0a8;
+}
+
+.form-group input,
+.form-group textarea {
+    width: 100%;
+    padding: 0.8rem 1rem;
+    border: 1.5px solid #e8dfd5;
+    border-radius: 12px;
+    font-size: 0.9rem;
+    font-family: inherit;
+    background: #fefcf9;
+    transition: all 0.2s;
+}
+
+.form-group input:focus,
+.form-group textarea:focus {
+    outline: none;
+    border-color: #d4c0a8;
+    box-shadow: 0 0 0 3px rgba(212, 192, 168, 0.2);
+    background: #ffffff;
+}
+
+.form-group textarea {
+    resize: vertical;
+    min-height: 100px;
+}
+
+/* Form Row for side-by-side fields */
+.form-row {
+    display: flex;
+    gap: 1rem;
+}
+
+.form-group.half {
+    flex: 1;
+}
+
+/* Submit Button */
+.submit-btn {
+    background: #d4c0a8;
+    border: none;
+    padding: 0.9rem;
+    font-size: 1rem;
+    font-weight: 600;
+    color: #5e4b3a;
+    border-radius: 40px;
+    cursor: pointer;
+    transition: all 0.25s;
+    margin-top: 0.5rem;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+}
+
+.submit-btn:hover {
+    background: #c8b294;
+    transform: translateY(-2px);
+}
+
+.submit-btn:active {
+    transform: translateY(0);
+}
+
+/* ======================================== */
+/* SUCCESS ACTIONS */
+/* ======================================== */
+.success-actions {
+    display: flex;
+    gap: 1rem;
+    justify-content: center;
+    margin-top: 1rem;
+    flex-wrap: wrap;
+}
+
+.btn-primary,
+.btn-secondary {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.7rem 1.5rem;
+    border-radius: 40px;
+    text-decoration: none;
+    font-weight: 500;
+    font-size: 0.9rem;
+    transition: all 0.2s;
+}
+
+.btn-primary {
+    background: #d4c0a8;
+    color: #5e4b3a;
+}
+
+.btn-primary:hover {
+    background: #c8b294;
+    transform: translateY(-1px);
+}
+
+.btn-secondary {
+    background: #f5efe7;
+    color: #6b5b4f;
+    border: 1px solid #e8dfd5;
+}
+
+.btn-secondary:hover {
+    background: #e8dfd5;
+    transform: translateY(-1px);
+}
+
+/* ======================================== */
+/* RESPONSIVE DESIGN */
+/* ======================================== */
+@media (max-width: 768px) {
+    .sidebar {
+        width: 240px;
+    }
+    
+    .content-area {
+        padding: 1.5rem;
+    }
+    
+    .form-card {
+        padding: 1.5rem;
+    }
+    
+    .form-row {
+        flex-direction: column;
+        gap: 1.2rem;
+    }
+    
+    .form-group.half {
+        width: 100%;
+    }
+}
+
+@media (max-width: 600px) {
+    .main-layout {
+        flex-direction: column;
+    }
+    
+    .sidebar {
+        width: 100%;
+        min-height: auto;
+        flex-direction: row;
+        align-items: center;
+        justify-content: space-between;
+        padding: 0.5rem 1rem;
+        border-bottom: 1px solid #e8dfd5;
+    }
+    
+    .vertical-divider-line {
+        display: none;
+    }
+    
+    .logo-section {
+        padding: 0.5rem;
+        border-bottom: none;
+        text-align: left;
+    }
+    
+    .logo-section h2 {
+        font-size: 1rem;
+    }
+    
+    .logo-sub {
+        font-size: 0.6rem;
+    }
+    
+    .sidebar-nav ul {
+        display: flex;
+        gap: 0.5rem;
+    }
+    
+    .sidebar-nav .nav-item {
+        padding: 0.5rem 0.8rem;
+        border-radius: 8px;
+    }
+    
+    .sidebar-nav .nav-item.active {
+        border-right: none;
+        background: #f5efe7;
+    }
+    
+    .nav-text {
+        display: none;
+    }
+    
+    .nav-icon {
+        font-size: 1.2rem;
+        margin: 0;
+    }
+    
+    .top-header {
+        justify-content: center;
+    }
+    
+    .success-actions {
+        flex-direction: column;
+    }
+    
+    .btn-primary,
+    .btn-secondary {
+        justify-content: center;
+    }
+}
+
+@media (max-width: 480px) {
+    .content-area {
+        padding: 1rem;
+    }
+    
+    .form-card {
+        padding: 1.2rem;
+    }
+    
+    .form-header h1 {
+        font-size: 1.2rem;
+    }
+    
+    .submit-btn {
+        padding: 0.7rem;
+    }
+}
