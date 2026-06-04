@@ -37,8 +37,8 @@
         <!-- Sidebar Kiri -->
         <div class="sidebar">
             <div class="logo-section">
-                <h2>SMART RSVP</h2>
-                <div class="logo-sub">MANAGEMENT SYSTEM</div>
+                <h2>SRMS</h2>
+                <div class="logo-sub">STAFF PORTAL</div>
             </div>
             
             <nav class="sidebar-nav">

@@ -1,0 +1,489 @@
+/* ======================================== */
+/* STAFF DASHBOARD STYLES */
+/* ======================================== */
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Segoe UI', 'Helvetica Neue', 'Poppins', sans-serif;
+    background: #f5efe7;
+    color: #4a3b2f;
+}
+
+/* ======================================== */
+/* TOP HEADER */
+/* ======================================== */
+.dashboard {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+.top-header {
+    background: #ffffff;
+    padding: 0.8rem 2rem;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    border-bottom: 1px solid #e8dfd5;
+}
+
+.header-right {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.vertical-divider {
+    width: 1px;
+    height: 30px;
+    background: #e8dfd5;
+}
+
+.staff-info {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.staff-name {
+    color: #6b5b4f;
+    font-weight: 500;
+}
+
+.staff-name i {
+    margin-right: 0.3rem;
+    color: #d4c0a8;
+}
+
+.logout-link {
+    color: #b87c5a;
+    text-decoration: none;
+    transition: color 0.2s;
+}
+
+.logout-link i {
+    margin-right: 0.3rem;
+}
+
+.logout-link:hover {
+    color: #d4a373;
+}
+
+/* ======================================== */
+/* MAIN LAYOUT - SIDEBAR */
+/* ======================================== */
+.main-layout {
+    display: flex;
+    flex: 1;
+}
+
+/* Sidebar */
+.sidebar {
+    width: 280px;
+    background: #ffffff;
+    min-height: calc(100vh - 55px);
+    display: flex;
+    flex-direction: column;
+}
+
+/* Logo Section */
+.logo-section {
+    padding: 2rem 1rem;
+    text-align: center;
+    border-bottom: 1px solid #f5efe7;
+}
+
+.logo-section h2 {
+    font-size: 1.6rem;
+    font-weight: 700;
+    color: #5e4b3a;
+    letter-spacing: 1px;
+}
+
+.logo-sub {
+    font-size: 0.7rem;
+    font-weight: 500;
+    color: #bcab99;
+    letter-spacing: 2px;
+    margin-top: 0.2rem;
+}
+
+/* Sidebar Navigation */
+.sidebar-nav {
+    padding: 1.5rem 0;
+}
+
+.sidebar-nav ul {
+    list-style: none;
+}
+
+.sidebar-nav .nav-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 0.8rem 1.5rem;
+    margin: 0.2rem 0;
+    cursor: pointer;
+    transition: all 0.2s;
+    color: #8c7a6b;
+    font-weight: 500;
+}
+
+.sidebar-nav .nav-item:hover {
+    background: #f5efe7;
+    color: #b87c5a;
+}
+
+.sidebar-nav .nav-item.active {
+    background: #f5efe7;
+    color: #b87c5a;
+    border-right: 3px solid #d4c0a8;
+}
+
+.nav-icon {
+    font-size: 1.2rem;
+    width: 28px;
+    text-align: center;
+}
+
+.nav-text {
+    font-size: 0.9rem;
+}
+
+/* Vertical Divider */
+.vertical-divider-line {
+    width: 1px;
+    background: #e8dfd5;
+    margin: 1rem 0;
+}
+
+/* ======================================== */
+/* CONTENT AREA */
+/* ======================================== */
+.content-area {
+    flex: 1;
+    padding: 2rem;
+    overflow-y: auto;
+}
+
+/* Welcome Section */
+.welcome-section {
+    margin-bottom: 2rem;
+}
+
+.welcome-section h1 {
+    font-size: 2rem;
+    color: #6b5b4f;
+    font-weight: 500;
+    letter-spacing: 1px;
+}
+
+.welcome-section p {
+    color: #bcab99;
+    margin-top: 0.3rem;
+}
+
+/* Stats Container */
+.stats-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1.5rem;
+    margin-bottom: 2rem;
+}
+
+.stat-card {
+    background: #ffffff;
+    padding: 1.5rem;
+    border-radius: 16px;
+    text-align: center;
+    border: 1px solid #e8dfd5;
+    transition: transform 0.2s;
+}
+
+.stat-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+}
+
+.stat-card i {
+    font-size: 2rem;
+    color: #d4c0a8;
+    margin-bottom: 0.5rem;
+}
+
+.stat-card h3 {
+    font-size: 0.85rem;
+    color: #8c7a6b;
+    margin-bottom: 0.5rem;
+}
+
+.stat-number {
+    font-size: 2rem;
+    font-weight: 600;
+    color: #6b5b4f;
+}
+
+/* Action Buttons */
+.action-buttons {
+    display: flex;
+    gap: 1rem;
+    margin-bottom: 2rem;
+    flex-wrap: wrap;
+}
+
+.action-btn {
+    background: #d4c0a8;
+    border: none;
+    padding: 0.7rem 1.5rem;
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: #5e4b3a;
+    border-radius: 40px;
+    cursor: pointer;
+    transition: all 0.2s;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    text-decoration: none;
+}
+
+.action-btn:hover {
+    background: #c8b294;
+    transform: translateY(-2px);
+}
+
+/* Recent Events */
+.recent-events {
+    margin-top: 0.5rem;
+}
+
+.section-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1rem;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+}
+
+.section-header h2 {
+    font-size: 1.2rem;
+    color: #6b5b4f;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.section-header h2 i {
+    color: #d4c0a8;
+}
+
+.view-all {
+    color: #b87c5a;
+    text-decoration: none;
+    font-size: 0.85rem;
+    transition: color 0.2s;
+    cursor: pointer;
+}
+
+.view-all:hover {
+    color: #d4a373;
+    text-decoration: underline;
+}
+
+/* Events Grid */
+.events-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+    gap: 1.5rem;
+}
+
+.event-card {
+    background: #ffffff;
+    border-radius: 16px;
+    padding: 1.2rem;
+    border: 1px solid #e8dfd5;
+    transition: all 0.3s ease;
+}
+
+.event-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
+    border-color: #d4c0a8;
+}
+
+.event-name {
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: #5e4b3a;
+    margin-bottom: 0.8rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 2px solid #f5efe7;
+}
+
+.event-details {
+    margin-bottom: 1rem;
+}
+
+.event-details p {
+    font-size: 0.85rem;
+    color: #8c7a6b;
+    margin: 0.4rem 0;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.event-details p i {
+    width: 18px;
+    color: #d4c0a8;
+    font-size: 0.8rem;
+}
+
+.details-btn {
+    background: #f5efe7;
+    border: 1px solid #e8dfd5;
+    padding: 0.5rem 1rem;
+    font-size: 0.8rem;
+    font-weight: 500;
+    color: #6b5b4f;
+    border-radius: 20px;
+    cursor: pointer;
+    transition: all 0.2s;
+    width: 100%;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.3rem;
+}
+
+.details-btn:hover {
+    background: #d4c0a8;
+    color: #ffffff;
+    border-color: #d4c0a8;
+}
+
+/* ======================================== */
+/* RESPONSIVE DESIGN */
+/* ======================================== */
+@media (max-width: 768px) {
+    .sidebar {
+        width: 240px;
+    }
+    
+    .content-area {
+        padding: 1.5rem;
+    }
+    
+    .welcome-section h1 {
+        font-size: 1.5rem;
+    }
+    
+    .events-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .action-buttons {
+        justify-content: center;
+    }
+}
+
+@media (max-width: 600px) {
+    .main-layout {
+        flex-direction: column;
+    }
+    
+    .sidebar {
+        width: 100%;
+        min-height: auto;
+        flex-direction: row;
+        align-items: center;
+        justify-content: space-between;
+        padding: 0.5rem 1rem;
+        border-bottom: 1px solid #e8dfd5;
+    }
+    
+    .vertical-divider-line {
+        display: none;
+    }
+    
+    .logo-section {
+        padding: 0.5rem;
+        border-bottom: none;
+        text-align: left;
+    }
+    
+    .logo-section h2 {
+        font-size: 1rem;
+    }
+    
+    .logo-sub {
+        font-size: 0.6rem;
+    }
+    
+    .sidebar-nav ul {
+        display: flex;
+        gap: 0.5rem;
+    }
+    
+    .sidebar-nav .nav-item {
+        padding: 0.5rem 0.8rem;
+        border-radius: 8px;
+    }
+    
+    /* Mobile active menu - TANPA border-right */
+    .sidebar-nav .nav-item.active {
+        border-right: none;
+        background: #f5efe7;
+    }
+    
+    .nav-text {
+        display: none;
+    }
+    
+    .nav-icon {
+        font-size: 1.2rem;
+        margin: 0;
+    }
+    
+    .top-header {
+        justify-content: center;
+    }
+    
+    .stats-container {
+        grid-template-columns: 1fr;
+        gap: 1rem;
+    }
+    
+    .action-buttons {
+        flex-direction: column;
+    }
+    
+    .action-btn {
+        width: 100%;
+        justify-content: center;
+    }
+}
+
+@media (max-width: 480px) {
+    .content-area {
+        padding: 1rem;
+    }
+    
+    .stat-card {
+        padding: 1rem;
+    }
+    
+    .stat-number {
+        font-size: 1.5rem;
+    }
+    
+    .event-card {
+        padding: 1rem;
+    }
+}

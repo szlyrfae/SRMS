@@ -1,0 +1,398 @@
+/* ======================================== */
+/* CUSTOMER DASHBOARD STYLES */
+/* Layout dengan Sidebar Kiri dan Border */
+/* ======================================== */
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Segoe UI', 'Helvetica Neue', 'Poppins', sans-serif;
+    background: #f5efe7;
+    color: #4a3b2f;
+}
+
+/* ======================================== */
+/* TOP HEADER */
+/* ======================================== */
+.dashboard {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+.top-header {
+    background: #ffffff;
+    padding: 0.8rem 2rem;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    border-bottom: 1px solid #e8dfd5;
+}
+
+.header-right {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.vertical-divider {
+    width: 1px;
+    height: 30px;
+    background: #e8dfd5;
+}
+
+.customer-info {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.customer-name {
+    color: #6b5b4f;
+    font-weight: 500;
+}
+
+.customer-name i {
+    margin-right: 0.3rem;
+    color: #d4c0a8;
+}
+
+.logout-link {
+    color: #b87c5a;
+    text-decoration: none;
+    transition: color 0.2s;
+}
+
+.logout-link i {
+    margin-right: 0.3rem;
+}
+
+.logout-link:hover {
+    color: #d4a373;
+}
+
+/* ======================================== */
+/* MAIN LAYOUT - SIDEBAR KIRI DENGAN BORDER */
+/* ======================================== */
+.main-layout {
+    display: flex;
+    flex: 1;
+    position: relative;
+}
+
+/* Sidebar Kiri */
+.sidebar {
+    width: 280px;
+    background: #ffffff;
+    min-height: calc(100vh - 55px);
+    display: flex;
+    flex-direction: column;
+}
+
+/* Logo Section - Tengah */
+.logo-section {
+    padding: 2rem 1rem;
+    text-align: center;
+    border-bottom: 1px solid #f5efe7;
+}
+
+.logo-section h2 {
+    font-size: 1.4rem;
+    font-weight: 700;
+    color: #5e4b3a;
+    letter-spacing: 1px;
+}
+
+.logo-sub {
+    font-size: 0.7rem;
+    font-weight: 500;
+    color: #bcab99;
+    letter-spacing: 2px;
+    margin-top: 0.2rem;
+}
+
+/* Sidebar Navigation */
+.sidebar-nav {
+    padding: 1.5rem 0;
+}
+
+.sidebar-nav ul {
+    list-style: none;
+}
+
+.sidebar-nav .nav-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 0.8rem 1.5rem;
+    margin: 0.2rem 0;
+    cursor: pointer;
+    transition: all 0.2s;
+    color: #8c7a6b;
+    font-weight: 500;
+}
+
+.sidebar-nav .nav-item:hover {
+    background: #f5efe7;
+    color: #b87c5a;
+}
+
+.sidebar-nav .nav-item.active {
+    background: #f5efe7;
+    color: #b87c5a;
+    border-right: 3px solid #d4c0a8;
+}
+
+.nav-icon {
+    font-size: 1.2rem;
+    width: 28px;
+    text-align: center;
+}
+
+.nav-text {
+    font-size: 0.9rem;
+}
+
+/* Vertical Divider Line - Garis pemisah antara sidebar dan content */
+.vertical-divider-line {
+    width: 1px;
+    background: #e8dfd5;
+    margin: 1rem 0;
+}
+
+/* Content Area Kanan */
+.content-area {
+    flex: 1;
+    padding: 2rem;
+    overflow-y: auto;
+}
+
+/* Welcome Section */
+.welcome-section {
+    margin-bottom: 2rem;
+}
+
+.welcome-section h1 {
+    font-size: 2rem;
+    color: #6b5b4f;
+    font-weight: 500;
+    letter-spacing: 1px;
+}
+
+/* Stats Container */
+.stats-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1.5rem;
+    margin-bottom: 2rem;
+}
+
+.stat-card {
+    background: #ffffff;
+    padding: 1.5rem;
+    border-radius: 16px;
+    text-align: center;
+    border: 1px solid #e8dfd5;
+    transition: transform 0.2s;
+}
+
+.stat-card:hover {
+    transform: translateY(-3px);
+}
+
+.stat-card i {
+    font-size: 2rem;
+    color: #d4c0a8;
+    margin-bottom: 0.5rem;
+}
+
+.stat-card h3 {
+    font-size: 0.85rem;
+    color: #8c7a6b;
+    margin-bottom: 0.5rem;
+}
+
+.stat-number {
+    font-size: 2rem;
+    font-weight: 600;
+    color: #6b5b4f;
+}
+
+/* Recent Events */
+.recent-events h2 {
+    font-size: 1.2rem;
+    color: #6b5b4f;
+    margin-bottom: 1rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 2px solid #f5efe7;
+}
+
+.events-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 1rem;
+}
+
+.event-card {
+    background: #ffffff;
+    border-radius: 12px;
+    padding: 1rem;
+    border: 1px solid #e8dfd5;
+    transition: all 0.2s;
+}
+
+.event-card:hover {
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+}
+
+.event-card h3 {
+    font-size: 1rem;
+    margin-bottom: 0.5rem;
+    color: #5e4b3a;
+}
+
+.event-details p {
+    font-size: 0.8rem;
+    color: #8c7a6b;
+    margin: 0.25rem 0;
+}
+
+.details-link {
+    display: inline-block;
+    margin-top: 0.5rem;
+    font-size: 0.75rem;
+    color: #b87c5a;
+    text-decoration: none;
+}
+
+.details-link:hover {
+    text-decoration: underline;
+}
+
+.no-events {
+    text-align: center;
+    padding: 2rem;
+    color: #bcab99;
+    background: #ffffff;
+    border-radius: 12px;
+}
+
+.no-events a {
+    color: #b87c5a;
+    text-decoration: none;
+}
+
+/* ======================================== */
+/* RESPONSIVE DESIGN */
+/* ======================================== */
+@media (max-width: 768px) {
+    .sidebar {
+        width: 220px;
+    }
+    
+    .content-area {
+        padding: 1.5rem;
+    }
+    
+    .welcome-section h1 {
+        font-size: 1.5rem;
+    }
+    
+    .stats-container {
+        gap: 1rem;
+    }
+}
+
+@media (max-width: 600px) {
+    .main-layout {
+        flex-direction: column;
+    }
+    
+    .sidebar {
+        width: 100%;
+        min-height: auto;
+        flex-direction: row;
+        align-items: center;
+        justify-content: space-between;
+        padding: 0.5rem 1rem;
+        border-bottom: 1px solid #e8dfd5;
+    }
+    
+    .vertical-divider-line {
+        display: none;
+    }
+    
+    .logo-section {
+        padding: 0.5rem;
+        border-bottom: none;
+    }
+    
+    .logo-section h2 {
+        font-size: 1rem;
+    }
+    
+    .logo-sub {
+        font-size: 0.6rem;
+    }
+    
+    .sidebar-nav ul {
+        display: flex;
+        gap: 0.5rem;
+    }
+    
+    .sidebar-nav .nav-item {
+        padding: 0.5rem 0.8rem;
+        border-radius: 8px;
+    }
+    
+    .sidebar-nav .nav-item.active {
+        border-right: none;
+        background: #f5efe7;
+    }
+    
+    .nav-text {
+        display: none;
+    }
+    
+    .nav-icon {
+        font-size: 1.2rem;
+        margin: 0;
+    }
+    
+    .top-header {
+        justify-content: center;
+    }
+}
+
+/* ---------------------------------------- */
+/* LOGO AREA */
+/* ---------------------------------------- */
+.logo-area {
+    margin-bottom: 1.5rem;
+    display: flex;
+    justify-content: flex-start;
+}
+
+.logo {
+    max-width: 100px;
+    height: auto;
+    display: block;
+}
+
+.logo-fallback {
+    width: 80px;
+    height: 80px;
+    background: #d4c5b0;
+    border-radius: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 12px;
+    color: #8c7a6b;
+    /*margin: 0 auto;*/
+    font-weight: bold;
+}

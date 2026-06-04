@@ -1,0 +1,339 @@
+/* ======================================== */
+/* SMART RSVP MANAGEMENT SYSTEM - MAIN STYLES */
+/* ======================================== */
+
+/* ---------------------------------------- */
+/* RESET & BASE */
+/* ---------------------------------------- */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    min-height: 100vh;
+    background: #f5efe7;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Segoe UI', 'Helvetica Neue', 'Poppins', system-ui, sans-serif;
+}
+
+/* ---------------------------------------- */
+/* LOGIN CONTAINER & CARD */
+/* ---------------------------------------- */
+.login-container {
+    width: 100%;
+    max-width: 850px;
+    padding: 1.5rem;
+}
+
+.login-card {
+    background: #ffffff;
+    border-radius: 20px;
+    padding: 2.5rem 2rem;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05), 0 1px 3px rgba(0, 0, 0, 0.02);
+    text-align: center;
+    transition: all 0.3s ease;
+}
+
+/* ---------------------------------------- */
+/* LOGO AREA */
+/* ---------------------------------------- */
+.logo-area {
+    margin-bottom: 1.5rem;
+    display: flex;
+    justify-content: center;
+}
+
+.logo {
+    max-width: 150px;
+    height: auto;
+    display: block;
+}
+
+.logo-fallback {
+    width: 80px;
+    height: 80px;
+    background: #d4c5b0;
+    border-radius: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 12px;
+    color: #8c7a6b;
+    margin: 0 auto;
+    font-weight: bold;
+}
+
+/* ---------------------------------------- */
+/* TITLE */
+/* ---------------------------------------- */
+.system-title {
+    font-size: 1.4rem;
+    font-weight: 500;
+    color: #6b5b4f;
+    margin-bottom: 2rem;
+    letter-spacing: -0.3px;
+}
+
+/* ---------------------------------------- */
+/* FORM */
+/* ---------------------------------------- */
+.login-form {
+    display: flex;
+    flex-direction: column;
+    gap: 1.2rem;
+}
+
+.input-group {
+    width: 100%;
+}
+
+/* Input Fields */
+.input-group input {
+    width: 100%;
+    padding: 0.9rem 1rem;
+    font-size: 0.95rem;
+    border: 1.5px solid #e8dfd5;
+    border-radius: 12px;
+    background: #fefcf9;
+    outline: none;
+    transition: all 0.25s ease;
+    color: #4a3b2f;
+}
+
+.input-group input:focus {
+    border-color: #c9b6a0;
+    background: #ffffff;
+    box-shadow: 0 0 0 3px rgba(201, 182, 160, 0.15);
+}
+
+.input-group input::placeholder {
+    color: #bfae9a;
+    font-weight: 400;
+}
+
+/* Password Wrapper */
+.password-wrapper {
+    position: relative;
+    width: 100%;
+}
+
+.password-wrapper input {
+    padding-right: 3rem;
+}
+
+/* Toggle Eye Button */
+.toggle-eye {
+    position: absolute;
+    right: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    font-size: 1.1rem;
+    color: #bfae9a;
+    transition: color 0.2s;
+    padding: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.toggle-eye:hover {
+    color: #8c7a6b;
+}
+
+/* Login Button */
+.login-btn {
+    width: 100%;
+    background: #d4c0a8;
+    border: none;
+    padding: 0.9rem;
+    font-size: 1rem;
+    font-weight: 600;
+    color: #5e4b3a;
+    border-radius: 40px;
+    cursor: pointer;
+    transition: all 0.25s ease;
+    margin-top: 0.5rem;
+    letter-spacing: 0.5px;
+}
+
+.login-btn:hover {
+    background: #c8b294;
+    color: #3d2e21;
+    transform: translateY(-1px);
+}
+
+.login-btn:active {
+    transform: translateY(0);
+}
+
+/* ---------------------------------------- */
+/* DEMO HINT */
+/* ---------------------------------------- */
+.demo-hint {
+    margin-top: 1.5rem;
+    font-size: 0.7rem;
+    color: #bcab99;
+    background: #faf8f5;
+    padding: 0.5rem;
+    border-radius: 20px;
+}
+
+.demo-hint p {
+    margin: 0;
+}
+
+/* ---------------------------------------- */
+/* ERROR MESSAGE (OLD - HIDDEN, USE MODAL) */
+/* ---------------------------------------- */
+.error-message {
+    display: none;
+}
+
+/* ---------------------------------------- */
+/* MODAL POPUP STYLES */
+/* ---------------------------------------- */
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 1000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    animation: fadeIn 0.3s ease;
+}
+
+.modal-content {
+    background-color: #ffffff;
+    margin: 15% auto;
+    width: 90%;
+    max-width: 400px;
+    border-radius: 20px;
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+    animation: slideIn 0.3s ease;
+    overflow: hidden;
+}
+
+.modal-header {
+    background: linear-gradient(135deg, #f5efe7, #faf6f0);
+    padding: 1.5rem;
+    text-align: center;
+    position: relative;
+    border-bottom: 1px solid #e8dfd5;
+}
+
+.close-btn {
+    position: absolute;
+    right: 15px;
+    top: 10px;
+    font-size: 28px;
+    font-weight: bold;
+    color: #bfae9a;
+    cursor: pointer;
+    transition: color 0.2s;
+}
+
+.close-btn:hover {
+    color: #b87c5a;
+}
+
+.modal-icon {
+    font-size: 48px;
+    margin-bottom: 0.5rem;
+}
+
+.modal-body {
+    padding: 2rem 1.5rem;
+    text-align: center;
+}
+
+.modal-body p {
+    color: #6b5b4f;
+    font-size: 1rem;
+    line-height: 1.5;
+    margin: 0;
+}
+
+.modal-footer {
+    padding: 1rem 1.5rem 1.5rem;
+    text-align: center;
+}
+
+.modal-close-btn {
+    background: #d4c0a8;
+    border: none;
+    padding: 0.7rem 2rem;
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: #5e4b3a;
+    border-radius: 40px;
+    cursor: pointer;
+    transition: all 0.2s;
+    min-width: 100px;
+}
+
+.modal-close-btn:hover {
+    background: #c8b294;
+    transform: translateY(-1px);
+}
+
+.modal-close-btn:active {
+    transform: translateY(0);
+}
+
+/* ---------------------------------------- */
+/* ANIMATIONS */
+/* ---------------------------------------- */
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+@keyframes slideIn {
+    from {
+        transform: translateY(-50px);
+        opacity: 0;
+    }
+    to {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
+
+/* ---------------------------------------- */
+/* RESPONSIVE DESIGN */
+/* ---------------------------------------- */
+@media (max-width: 480px) {
+    .login-card {
+        padding: 1.8rem 1.5rem;
+    }
+    
+    .system-title {
+        font-size: 1.2rem;
+    }
+    
+    .logo {
+        max-width: 90px;
+    }
+    
+    .modal-content {
+        margin: 30% auto;
+        width: 85%;
+    }
+    
+    .modal-body {
+        padding: 1.5rem 1.2rem;
+    }
+    
+    .modal-body p {
+        font-size: 0.9rem;
+    }
+}

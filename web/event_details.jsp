@@ -3,7 +3,9 @@
 <%@ page import="java.io.*" %>
 <%
     String loggedInUser = (String) session.getAttribute("loggedInUser");
-    if (loggedInUser == null || !"customer".equals(loggedInUser)) {
+    String userRole = (String) session.getAttribute("userRole");
+    
+    if (loggedInUser == null) {
         response.sendRedirect("login.jsp");
         return;
     }
@@ -11,26 +13,65 @@
     // Get event ID from request
     String eventId = request.getParameter("id");
     if (eventId == null) {
-        response.sendRedirect("cust_dashboard.jsp");
+        if ("Staff".equals(userRole)) {
+            response.sendRedirect("event_list.jsp");
+        } else {
+            response.sendRedirect("cust_dashboard.jsp");
+        }
         return;
     }
     
-    // Sample event data (in real app, get from database)
-    // For demo purposes, we'll use sample data
-    String eventName = "Annual Tech Conference 2025";
-    String eventDescription = "Join us for the biggest tech conference of the year featuring industry experts, workshops, and networking opportunities.";
-    String eventDate = "2025-06-15";
-    String eventTime = "09:00 AM";
-    String venue = "KL Convention Center";
+    // Get event from session based on role
+    Map<String, String> event = null;
     
-    // Check if links are generated from session or request
+    if ("Staff".equals(userRole)) {
+        // Staff: Get from allEvents
+        List<Map<String, String>> allEvents = (List<Map<String, String>>) session.getAttribute("allEvents");
+        if (allEvents != null) {
+            for (Map<String, String> e : allEvents) {
+                if (e.get("id").equals(eventId)) {
+                    event = e;
+                    break;
+                }
+            }
+        }
+    } else {
+        // Customer: Get from customerEvents
+        List<Map<String, String>> customerEvents = (List<Map<String, String>>) session.getAttribute("customerEvents_" + loggedInUser);
+        if (customerEvents != null) {
+            for (Map<String, String> e : customerEvents) {
+                if (e.get("id").equals(eventId)) {
+                    event = e;
+                    break;
+                }
+            }
+        }
+    }
+    
+    // If event not found, redirect
+    if (event == null) {
+        if ("Staff".equals(userRole)) {
+            response.sendRedirect("event_list.jsp");
+        } else {
+            response.sendRedirect("cust_dashboard.jsp");
+        }
+        return;
+    }
+    
+    // Get event details
+    String eventName = event.get("name");
+    String eventDescription = event.get("description") != null ? event.get("description") : "";
+    String eventDate = event.get("date");
+    String eventTime = event.get("time");
+    String venue = event.get("venue");
+    
+    // Check if links are generated from session
     String registrationLink = (String) session.getAttribute("regLink_" + eventId);
     String attendanceLink = (String) session.getAttribute("attLink_" + eventId);
     
     boolean isRegLinkGenerated = (registrationLink != null && !registrationLink.isEmpty());
     boolean isAttLinkGenerated = (attendanceLink != null && !attendanceLink.isEmpty());
     
-    // If not set, use default or null
     if (registrationLink == null) registrationLink = "";
     if (attendanceLink == null) attendanceLink = "";
 %>
@@ -48,9 +89,7 @@
 <div class="dashboard">
     <!-- Top Header -->
     <div class="top-header">
-        <div class="header-left">
-            <!-- Empty or logo kecil -->
-        </div>
+        <div class="header-left"></div>
         <div class="header-right">
             <div class="vertical-divider"></div>
             <div class="customer-info">
@@ -62,27 +101,50 @@
 
     <!-- Main Layout with Sidebar -->
     <div class="main-layout">
-        <!-- Sidebar Kiri Sama Macam Dashboard -->
+        <!-- Sidebar based on role -->
         <div class="sidebar">
             <div class="logo-section">
-                <h2>SMART RSVP</h2>
-                <div class="logo-sub">MANAGEMENT SYSTEM</div>
+                <h2>SRMS</h2>
+                <div class="logo-sub"><%= "Staff".equals(userRole) ? "STAFF PORTAL" : "CUSTOMER PORTAL" %></div>
             </div>
             
             <nav class="sidebar-nav">
                 <ul>
-                    <li class="nav-item" id="navDashboard">
-                        <i class="fas fa-tachometer-alt nav-icon"></i>
-                        <span class="nav-text">Dashboard</span>
-                    </li>
-                    <li class="nav-item" id="navAddEvent">
-                        <i class="fas fa-plus-circle nav-icon"></i>
-                        <span class="nav-text">Add Event</span>
-                    </li>
-                    <li class="nav-item" id="navEventList">
-                        <i class="fas fa-calendar-alt nav-icon"></i>
-                        <span class="nav-text">Event List</span>
-                    </li>
+                    <% if ("Staff".equals(userRole)) { %>
+                        <li class="nav-item" id="navDashboard">
+                            <i class="fas fa-tachometer-alt nav-icon"></i>
+                            <span class="nav-text">Dashboard</span>
+                        </li>
+                        <li class="nav-item" id="navHall">
+                            <i class="fas fa-building nav-icon"></i>
+                            <span class="nav-text">Hall</span>
+                        </li>
+                        <li class="nav-item" id="navStaff">
+                            <i class="fas fa-users-gear nav-icon"></i>
+                            <span class="nav-text">Staff</span>
+                        </li>
+                        <li class="nav-item" id="navReport">
+                            <i class="fas fa-chart-bar nav-icon"></i>
+                            <span class="nav-text">Report</span>
+                        </li>
+                        <li class="nav-item active" id="navEventList">
+                            <i class="fas fa-calendar-alt nav-icon"></i>
+                            <span class="nav-text">Event List</span>
+                        </li>
+                    <% } else { %>
+                        <li class="nav-item" id="navDashboard">
+                            <i class="fas fa-tachometer-alt nav-icon"></i>
+                            <span class="nav-text">Dashboard</span>
+                        </li>
+                        <li class="nav-item" id="navAddEvent">
+                            <i class="fas fa-plus-circle nav-icon"></i>
+                            <span class="nav-text">Add Event</span>
+                        </li>
+                        <li class="nav-item active" id="navEventList">
+                            <i class="fas fa-calendar-alt nav-icon"></i>
+                            <span class="nav-text">Event List</span>
+                        </li>
+                    <% } %>
                 </ul>
             </nav>
         </div>
@@ -90,7 +152,7 @@
         <!-- Vertical Divider Line -->
         <div class="vertical-divider-line"></div>
 
-        <!-- Content Area Kanan -->
+        <!-- Content Area -->
         <div class="content-area">
             <!-- Event Details Card -->
             <div class="event-card">
@@ -105,7 +167,7 @@
                     </div>
                     <div class="info-row">
                         <div class="info-label"><i class="fas fa-align-left"></i> Event Description:</div>
-                        <div class="info-value"><%= eventDescription %></div>
+                        <div class="info-value"><%= eventDescription.isEmpty() ? "-" : eventDescription %></div>
                     </div>
                     <div class="info-row">
                         <div class="info-label"><i class="fas fa-map-marker-alt"></i> Venue:</div>
@@ -119,6 +181,12 @@
                         <div class="info-label"><i class="fas fa-clock"></i> Time:</div>
                         <div class="info-value"><%= eventTime %></div>
                     </div>
+                    <% if ("Staff".equals(userRole)) { %>
+                        <div class="info-row">
+                            <div class="info-label"><i class="fas fa-user"></i> Created By:</div>
+                            <div class="info-value"><%= event.get("createdBy") %></div>
+                        </div>
+                    <% } %>
                 </div>
                 
                 <!-- Links Section -->
@@ -212,172 +280,11 @@
     </div>
 </div>
 
-<!-- Hidden form for generating links -->
-<form id="linkForm" method="post" style="display: none;">
-    <input type="hidden" name="action" id="linkAction">
-    <input type="hidden" name="type" id="linkType">
-    <input type="hidden" name="eventId" id="linkEventId">
-</form>
-
+<script src="js/event_details.js"></script>
 <script>
-    // Navigation to different pages
-    document.getElementById('navDashboard').addEventListener('click', function() {
-        window.location.href = 'cust_dashboard.jsp';
-    });
-    document.getElementById('navAddEvent').addEventListener('click', function() {
-        window.location.href = 'add_event.jsp';
-    });
-    document.getElementById('navEventList').addEventListener('click', function() {
-        window.location.href = 'event_list.jsp';
-    });
-    
-    // Generate link function
-    function generateLink(type, eventId) {
-        fetch('generate_link.jsp', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/x-www-form-urlencoded',
-            },
-            body: 'action=generate&type=' + type + '&eventId=' + eventId
-        })
-        .then(response => response.json())
-        .then(data => {
-            if (data.success) {
-                location.reload();
-            } else {
-                alert('Failed to generate link. Please try again.');
-            }
-        })
-        .catch(error => {
-            console.error('Error:', error);
-            alert('An error occurred. Please try again.');
-        });
-    }
-    
-    // Regenerate link function
-    function regenerateLink(type, eventId) {
-        if (confirm('Are you sure you want to regenerate this link? The old link will no longer work.')) {
-            fetch('generate_link.jsp', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/x-www-form-urlencoded',
-                },
-                body: 'action=regenerate&type=' + type + '&eventId=' + eventId
-            })
-            .then(response => response.json())
-            .then(data => {
-                if (data.success) {
-                    location.reload();
-                } else {
-                    alert('Failed to regenerate link. Please try again.');
-                }
-            })
-            .catch(error => {
-                console.error('Error:', error);
-                alert('An error occurred. Please try again.');
-            });
-        }
-    }
-    
-    // Copy to clipboard function
-    function copyToClipboard(elementId) {
-        const inputElement = document.getElementById(elementId);
-        inputElement.select();
-        inputElement.setSelectionRange(0, 99999);
-        
-        try {
-            document.execCommand('copy');
-            showToast('Link copied to clipboard!');
-        } catch (err) {
-            navigator.clipboard.writeText(inputElement.value).then(() => {
-                showToast('Link copied to clipboard!');
-            }).catch(() => {
-                alert('Failed to copy link. Please copy manually.');
-            });
-        }
-    }
-    
-    // Refresh attendee list
-    function refreshAttendeeList(eventId) {
-        const tableBody = document.getElementById('attendeeTableBody');
-        tableBody.innerHTML = '<tr><td colspan="4" class="loading-text">Loading attendees......</td></tr>';
-        
-        fetch('generate_link.jsp?action=getAttendees&eventId=' + eventId)
-            .then(response => response.json())
-            .then(data => {
-                if (data.success && data.attendees) {
-                    if (data.attendees.length === 0) {
-                        tableBody.innerHTML = '<tr><td colspan="4" class="loading-text">No attendees registered yet.</td></tr>';
-                    } else {
-                        tableBody.innerHTML = '';
-                        data.attendees.forEach(attendee => {
-                            const row = tableBody.insertRow();
-                            row.insertCell(0).textContent = attendee.name || '-';
-                            row.insertCell(1).textContent = attendee.phone || '-';
-                            row.insertCell(2).textContent = attendee.email || '-';
-                            
-                            const statusCell = row.insertCell(3);
-                            const statusClass = attendee.status === 'Registered' ? 'status-registered' : 
-                                               (attendee.status === 'Attended' ? 'status-attended' : 'status-cancelled');
-                            statusCell.innerHTML = `<span class="status-badge ${statusClass}">${attendee.status || 'Pending'}</span>`;
-                        });
-                    }
-                } else {
-                    tableBody.innerHTML = '<tr><td colspan="4" class="loading-text">Failed to load attendees.</td></tr>';
-                }
-            })
-            .catch(error => {
-                console.error('Error:', error);
-                tableBody.innerHTML = '<tr><td colspan="4" class="loading-text">Error loading attendees.</td></tr>';
-            });
-    }
-    
-    // Show toast notification
-    function showToast(message) {
-        let toast = document.querySelector('.toast-notification');
-        if (!toast) {
-            toast = document.createElement('div');
-            toast.className = 'toast-notification';
-            toast.style.cssText = `
-                position: fixed;
-                bottom: 20px;
-                right: 20px;
-                background: #4a3b2f;
-                color: white;
-                padding: 12px 20px;
-                border-radius: 8px;
-                font-size: 14px;
-                z-index: 1000;
-                opacity: 0;
-                transition: opacity 0.3s ease;
-                pointer-events: none;
-            `;
-            document.body.appendChild(toast);
-        }
-        
-        toast.textContent = message;
-        toast.style.opacity = '1';
-        
-        setTimeout(() => {
-            toast.style.opacity = '0';
-        }, 2000);
-    }
-    
-    // Load attendees on page load
-    refreshAttendeeList('<%= eventId %>');
-    
-    // Auto refresh every 30 seconds
-    let refreshInterval = setInterval(() => {
-        refreshAttendeeList('<%= eventId %>');
-    }, 30000);
-    
-    // Clear interval when page is unloaded
-    window.addEventListener('beforeunload', function() {
-        if (refreshInterval) {
-            clearInterval(refreshInterval);
-        }
-    });
+    // Pass eventId to JavaScript
+    window.eventId = '<%= eventId %>';
+    window.userRole = '<%= userRole %>';
 </script>
-
 </body>
 </html>
