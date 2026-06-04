@@ -4,7 +4,7 @@
 <%
     String loggedInUser = (String) session.getAttribute("loggedInUser");
     if (loggedInUser == null || !"customer".equals(loggedInUser)) {
-        response.sendRedirect("index.jsp");
+        response.sendRedirect("login.jsp");
         return;
     }
     
