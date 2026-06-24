@@ -6,22 +6,38 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Smart RSVP Management System</title>
     <link rel="stylesheet" href="css/style.css">
+    <style>
+        /* Gaya tambahan untuk pautan pendaftaran */
+        .signup-redirect {
+            margin-top: 20px;
+            text-align: center;
+            font-size: 14px;
+            color: #666;
+        }
+        .signup-redirect a {
+            color: #d4c0a8;
+            text-decoration: none;
+            font-weight: bold;
+            transition: color 0.2s;
+        }
+        .signup-redirect a:hover {
+            color: #bfa88f;
+            text-decoration: underline;
+        }
+    </style>
 </head>
 <body>
 
 <div class="login-container">
     <div class="login-card">
         
-        <!-- Logo from assets/image/ -->
         <div class="logo-area">
             <img src="assets/logo_small.png" alt="Logo" class="logo" id="logoImage">
         </div>
         
-        <!-- Title -->
-        <h1 class="system-title">Smart RSVP Management System</h1>
+        <h1 class="system-title">Smart RSVP Management System </h1>
         
-        <!-- Login Form -->
-        <form action="login.jsp" method="post" class="login-form" id="loginForm">
+        <form action="LoginServlet" method="post" class="login-form" id="loginForm">
             <div class="input-group">
                 <input type="text" name="username" id="username" placeholder="Username" value="${param.username != null ? param.username : ''}" required autofocus>
             </div>
@@ -36,14 +52,12 @@
             <button type="submit" class="login-btn">Login</button>
         </form>
         
-        <!-- Demo Credentials Hint -->
-        <div class="demo-hint">
-            <p>Demo: admin / rsvp@2025</p>
+        <div class="signup-redirect">
+            <p>Don't have an account? <a href="signup.jsp">Sign Up Here</a></p>
         </div>
     </div>
 </div>
 
-<!-- POPUP MODAL FOR ERROR MESSAGE -->
 <div id="errorModal" class="modal">
     <div class="modal-content">
         <div class="modal-header">
@@ -61,35 +75,10 @@
 
 <script src="js/script.js"></script>
 
-<%
-    String username = request.getParameter("username");
-    String password = request.getParameter("password");
-    String errorMsg = null;
-
-    if (username != null && password != null) {
-        // Demo credentials
-        if (("staff".equals(username) && "staff".equals(password)) ||
-            ("customer".equals(username) && "customer".equals(password))) {
-            
-            session.setAttribute("loggedInUser", username);
-            
-            // Redirect based on role - Paling ringkas
-            if ("staff".equals(username)) {
-                session.setAttribute("userRole", "Staff");
-                response.sendRedirect("staff_dashboard.jsp");
-            } else {
-                session.setAttribute("userRole", "Customer");
-                response.sendRedirect("cust_dashboard.jsp");
-            }
-            return;
-        } else {
-            errorMsg = "Invalid username or password. Please try again.";
-        }
-    }
+<% 
+    String errorMsg = (String) request.getAttribute("errorMsg");
+    if (errorMsg != null) { 
 %>
-
-<!-- Pass error message to JavaScript if exists -->
-<% if (errorMsg != null) { %>
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             showErrorPopup('<%= errorMsg %>');

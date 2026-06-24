@@ -1,16 +1,17 @@
 /**
- * Staff Management JavaScript
- * Handle add, edit, delete operations
+ * Staff Management JavaScript Pipeline
  */
+
+// Mod kawalan penunjuk status operasi borang (add atau update)
+let currentAction = 'add';
 
 document.addEventListener('DOMContentLoaded', function() {
     initNavigation();
     initModal();
     initFormSubmit();
-    loadStaffFromSession();
+    loadStaffFromDatabase();
 });
 
-// Navigation
 function initNavigation() {
     const navDashboard = document.getElementById('navDashboard');
     const navHall = document.getElementById('navHall');
@@ -21,12 +22,11 @@ function initNavigation() {
     if (navDashboard) navDashboard.onclick = () => window.location.href = 'staff_dashboard.jsp';
     if (navHall) navHall.onclick = () => window.location.href = 'hall.jsp';
     if (navStaff) navStaff.onclick = () => window.location.href = 'staff.jsp';
-    if (navReport) navReport.onclick = () => window.location.href = 'report.jsp';
-    if (navReservation) navReservation.onclick = () => window.location.href = 'event_list.jsp';
+    if (navReport) navReport.onclick = () => window.location.href = 'ReportServlet';
+    if (navReservation) navReservation.onclick = () => window.location.href = 'EventListServlet';
 }
 
-// Load staff from session via AJAX
-function loadStaffFromSession() {
+function loadStaffFromDatabase() {
     fetch('staff_ajax.jsp?action=getAll')
         .then(response => response.text())
         .then(text => {
@@ -35,36 +35,46 @@ function loadStaffFromSession() {
                 if (data.success) {
                     updateTable(data.staff);
                 } else {
-                    console.error('Failed to load staff:', data.message);
-                    showToast('Failed to load staff', 'error');
+                    showToast('Failed to sync staff list', 'error');
                 }
             } catch (e) {
-                console.error('JSON parse error:', e, text);
-                showToast('Error loading data', 'error');
+                console.error('Parse error:', e, text);
+                showToast('Format mismatch reading users', 'error');
             }
         })
         .catch(error => {
             console.error('Fetch error:', error);
-            showToast('Cannot connect to server', 'error');
+            showToast('Network interface blocked', 'error');
         });
 }
 
-// Show toast message
-function showToast(message, type) {
+function showToast(message, type = 'success') {
     const toast = document.createElement('div');
     toast.className = `error-toast ${type === 'success' ? 'success-toast' : ''}`;
     toast.innerHTML = `<i class="fas ${type === 'success' ? 'fa-check-circle' : 'fa-exclamation-circle'}"></i> ${message}`;
+    
+    const bgColor = type === 'success' ? '#2e7d32' : '#c62828';
+    toast.style.cssText = `
+        position: fixed;
+        bottom: 20px;
+        right: 20px;
+        background: ${bgColor};
+        color: white;
+        padding: 12px 20px;
+        border-radius: 8px;
+        z-index: 2000;
+        animation: fadeInOut 3s ease;
+    `;
     document.body.appendChild(toast);
     setTimeout(() => toast.remove(), 3000);
 }
 
-// Update table with data
 function updateTable(staffList) {
     const tbody = document.getElementById('staffTableBody');
     if (!tbody) return;
     
     if (!staffList || staffList.length === 0) {
-        tbody.innerHTML = '<tr><td colspan="7" style="text-align: center;">No staff available. Click "+ Add Staff" to create one.</td></tr>';
+        tbody.innerHTML = '<tr><td colspan="4" style="text-align: center; color:#888;">No staff records found.</td></tr>';
         return;
     }
     
@@ -75,15 +85,11 @@ function updateTable(staffList) {
         
         row.insertCell(0).textContent = staff.id;
         row.insertCell(1).textContent = staff.name;
-        row.insertCell(2).textContent = staff.position;
-        row.insertCell(3).textContent = staff.email;
-        row.insertCell(4).textContent = staff.phone;
         
-        const statusCell = row.insertCell(5);
-        const statusClass = (staff.status || 'Active').toLowerCase();
-        statusCell.innerHTML = `<span class="status-badge ${statusClass}">${staff.status || 'Active'}</span>`;
+        const roleCell = row.insertCell(2);
+        roleCell.innerHTML = `<span class="status-badge staff">${staff.role}</span>`;
         
-        const actionsCell = row.insertCell(6);
+        const actionsCell = row.insertCell(3);
         actionsCell.className = 'actions';
         actionsCell.innerHTML = `
             <button class="edit-btn" onclick="editStaff(this)"><i class="fas fa-edit"></i> Edit</button>
@@ -92,17 +98,17 @@ function updateTable(staffList) {
     });
 }
 
-// Initialize Modal
 function initModal() {
     const modal = document.getElementById('staffModal');
     const addBtn = document.getElementById('addStaffBtn');
-    const closeBtn = document.querySelector('.close-modal');
+    const closeBtn = document.getElementById('closeModalBtn') || document.querySelector('.close-modal');
     
     if (addBtn) {
         addBtn.onclick = () => {
+            currentAction = 'add'; // Set status operasi "ADD"
             document.getElementById('modalTitle').innerHTML = '<i class="fas fa-plus-circle"></i> Add New Staff';
             document.getElementById('staffForm').reset();
-            document.getElementById('staffId').value = '';
+            document.getElementById('staffId').disabled = false; // Buka input ID untuk diisi manual
             modal.style.display = 'block';
         };
     }
@@ -114,7 +120,6 @@ function initModal() {
     };
 }
 
-// Initialize Form Submit
 function initFormSubmit() {
     const form = document.getElementById('staffForm');
     if (form) {
@@ -125,38 +130,25 @@ function initFormSubmit() {
     }
 }
 
-// Save Staff (Add or Edit)
 function saveStaff() {
-    const staffId = document.getElementById('staffId').value;
+    const staffId = document.getElementById('staffId').value.trim();
     const staffName = document.getElementById('staffName').value.trim();
-    const staffPosition = document.getElementById('staffPosition').value.trim();
-    const staffEmail = document.getElementById('staffEmail').value.trim();
-    const staffPhone = document.getElementById('staffPhone').value.trim();
-    const staffStatus = document.getElementById('staffStatus').value;
+    const staffPassword = document.getElementById('staffPassword').value.trim();
+    const staffRole = document.getElementById('staffRole').value;
     
-    if (!staffName) { showToast('Please enter staff name', 'error'); return; }
-    if (!staffPosition) { showToast('Please enter position', 'error'); return; }
-    if (!staffEmail) { showToast('Please enter email', 'error'); return; }
-    if (!staffPhone) { showToast('Please enter phone number', 'error'); return; }
-    
-    // Validate email format
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    if (!emailRegex.test(staffEmail)) {
-        showToast('Please enter a valid email address', 'error');
+    if (!staffId || !staffName || !staffPassword) {
+        showToast('All fields are mandatory', 'error');
         return;
     }
     
-    const url = 'staff_ajax.jsp';
     const params = new URLSearchParams();
-    params.append('action', staffId ? 'update' : 'add');
+    params.append('action', currentAction); // Menghantar sama ada 'add' atau 'update'
     params.append('id', staffId);
     params.append('name', staffName);
-    params.append('position', staffPosition);
-    params.append('email', staffEmail);
-    params.append('phone', staffPhone);
-    params.append('status', staffStatus);
+    params.append('password', staffPassword);
+    params.append('role', staffRole);
     
-    fetch(url, {
+    fetch('staff_ajax.jsp', {
         method: 'POST',
         headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
         body: params
@@ -167,56 +159,43 @@ function saveStaff() {
             const data = JSON.parse(text);
             if (data.success) {
                 document.getElementById('staffModal').style.display = 'none';
-                loadStaffFromSession();
-                showToast(staffId ? 'Staff updated successfully!' : 'Staff added successfully!', 'success');
+                loadStaffFromDatabase();
+                showToast(currentAction === 'update' ? 'Staff updated successfully!' : 'New staff added successfully!');
             } else {
-                showToast('Failed to save staff: ' + (data.message || 'Unknown error'), 'error');
+                showToast('Transaction rejected: ' + data.message, 'error');
             }
         } catch (e) {
-            console.error('JSON parse error:', e, text);
-            showToast('Error processing response', 'error');
+            showToast('Malformed transaction response packet', 'error');
         }
     })
-    .catch(error => {
-        console.error('Error:', error);
-        showToast('An error occurred', 'error');
-    });
+    .catch(() => showToast('Interface timeout', 'error'));
 }
 
-// Edit Staff
 function editStaff(button) {
+    currentAction = 'update'; // Set status operasi "UPDATE"
     const row = button.closest('tr');
     const staffId = row.getAttribute('data-id');
     const cells = row.cells;
     
     document.getElementById('modalTitle').innerHTML = '<i class="fas fa-edit"></i> Edit Staff';
-    document.getElementById('staffId').value = staffId;
-    document.getElementById('staffName').value = cells[1].textContent;
-    document.getElementById('staffPosition').value = cells[2].textContent;
-    document.getElementById('staffEmail').value = cells[3].textContent;
-    document.getElementById('staffPhone').value = cells[4].textContent;
     
-    const statusText = cells[5].querySelector('.status-badge')?.textContent || cells[5].textContent;
-    const statusSelect = document.getElementById('staffStatus');
-    for (let i = 0; i < statusSelect.options.length; i++) {
-        if (statusSelect.options[i].value === statusText) {
-            statusSelect.selectedIndex = i;
-            break;
-        }
-    }
+    const idInput = document.getElementById('staffId');
+    idInput.value = staffId;
+    idInput.disabled = true; // Kunci input ID semasa fasa edit (Primary key protection)
+    
+    document.getElementById('staffName').value = cells[1].textContent;
+    document.getElementById('staffPassword').value = ''; // Kosongkan input password demi sekuriti
     
     document.getElementById('staffModal').style.display = 'block';
 }
 
-// Delete Staff with confirmation
 function deleteStaff(staffId) {
-    if (confirm('Are you sure you want to delete this staff member?\n\nThis action cannot be undone.')) {
-        const url = 'staff_ajax.jsp';
+    if (confirm('Are you sure you want to delete this staff member?')) {
         const params = new URLSearchParams();
         params.append('action', 'delete');
         params.append('id', staffId);
         
-        fetch(url, {
+        fetch('staff_ajax.jsp', {
             method: 'POST',
             headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
             body: params
@@ -226,19 +205,17 @@ function deleteStaff(staffId) {
             try {
                 const data = JSON.parse(text);
                 if (data.success) {
-                    loadStaffFromSession();
-                    showToast('Staff deleted successfully!', 'success');
+                    loadStaffFromDatabase();
+                    showToast('Staff records deleted.');
                 } else {
-                    showToast('Failed to delete staff', 'error');
+                    showToast('Delete process failed', 'error');
                 }
             } catch (e) {
-                console.error('JSON parse error:', e);
-                showToast('Error processing response', 'error');
+                showToast('Error processing data stream', 'error');
             }
-        })
-        .catch(error => {
-            console.error('Error:', error);
-            showToast('An error occurred', 'error');
         });
     }
 }
+
+window.editStaff = editStaff;
+window.deleteStaff = deleteStaff;

@@ -30,13 +30,13 @@ function initNavigation() {
     
     if (navReport) {
         navReport.addEventListener('click', function() {
-            window.location.href = 'report.jsp';
+            window.location.href = 'ReportServlet';
         });
     }
     
     if (navReservation) {
         navReservation.addEventListener('click', function() {
-            window.location.href = 'event_list.jsp';
+            window.location.href = 'EventListServlet';
         });
     }
     

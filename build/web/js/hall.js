@@ -21,7 +21,7 @@ function initNavigation() {
     if (navDashboard) navDashboard.onclick = () => window.location.href = 'staff_dashboard.jsp';
     if (navHall) navHall.onclick = () => window.location.href = 'hall.jsp';
     if (navStaff) navStaff.onclick = () => window.location.href = 'staff.jsp';
-    if (navReport) navReport.onclick = () => window.location.href = 'report.jsp';
+    if (navReport) navReport.onclick = () => window.location.href = 'ReportServlet';
     if (navReservation) navReservation.onclick = () => window.location.href = 'event_list.jsp';
 }
 

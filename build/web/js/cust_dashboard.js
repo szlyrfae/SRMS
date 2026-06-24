@@ -1,95 +1,116 @@
 /**
  * Customer Dashboard JavaScript
- * Load events and attendees data
+ * Synchronized for Dynamic MySQL Database & SRMS UI Elements
  */
 
-// Load data when page loads
+// Muatkan data sebaik sahaja halaman selesai dimuatkan
 document.addEventListener('DOMContentLoaded', function() {
     initNavigation();
     loadDashboardData();
 });
 
-// Navigation to different pages
+// Menguruskan pautan navigasi menu tepi (Sidebar)
 function initNavigation() {
     const navDashboard = document.getElementById('navDashboard');
     const navAddEvent = document.getElementById('navAddEvent');
     const navEventList = document.getElementById('navEventList');
     
-    // Dashboard - stay on same page
     if (navDashboard) {
         navDashboard.addEventListener('click', function() {
             window.location.href = 'cust_dashboard.jsp';
         });
     }
     
-    // Add Event - redirect to add_event.jsp
     if (navAddEvent) {
         navAddEvent.addEventListener('click', function() {
-            window.location.href = 'add_event.jsp';
+            window.location.href = 'EventServlet';
         });
     }
     
-    // Event List - redirect to event_list.jsp
     if (navEventList) {
         navEventList.addEventListener('click', function() {
-            window.location.href = 'event_list.jsp';
+            window.location.href = 'EventListServlet';
         });
     }
 }
 
-// Load dashboard statistics
+// Mengambil statistik dashboard menggunakan AJAX fetch
 function loadDashboardData() {
-    // In real application, fetch from server
-    // For demo, we'll use sample data or fetch from session
-    
-    // You can make an AJAX call to get actual data
     fetch('get_dashboard_data.jsp')
-        .then(response => response.json())
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }
+            return response.json();
+        })
         .then(data => {
             if (data.success) {
-                document.getElementById('totalEvents').textContent = data.totalEvents || 0;
-                document.getElementById('totalAttendees').textContent = data.totalAttendees || 0;
-                document.getElementById('completedEvents').textContent = data.completedEvents || 0;
+                // 🎯 SINKRONISASI 1: Memastikan elemen dipetakan tepat mengikut ID di cust_dashboard.jsp
+                if (document.getElementById('totalEvents')) {
+                    document.getElementById('totalEvents').textContent = data.totalEvents ?? 0;
+                }
+                
+                // 🎯 SINKRONISASI 2: Memetakan data upcomingEvents ke elemen id="Upcoming" anda
+                if (document.getElementById('Upcoming')) {
+                    document.getElementById('Upcoming').textContent = data.upcomingEvents ?? 0;
+                }
+                
+                if (document.getElementById('completedEvents')) {
+                    document.getElementById('completedEvents').textContent = data.completedEvents ?? 0;
+                }
+                
+                // Muatkan kad senarai acara terbaharu
                 renderRecentEvents(data.recentEvents);
+            } else {
+                console.error('Server returned failed status:', data.message);
+                setDefaultStats();
             }
         })
         .catch(error => {
             console.error('Error loading dashboard data:', error);
-            // Set default values
-            document.getElementById('totalEvents').textContent = '0';
-            document.getElementById('totalAttendees').textContent = '0';
-            document.getElementById('completedEvents').textContent = '0';
+            setDefaultStats();
         });
 }
 
-// Render recent events
+// Fungsi menetapkan nilai kosong jika sistem mengalami masalah database
+function setDefaultStats() {
+    if (document.getElementById('totalEvents')) document.getElementById('totalEvents').textContent = '0';
+    if (document.getElementById('Upcoming')) document.getElementById('Upcoming').textContent = '0';
+    if (document.getElementById('completedEvents')) document.getElementById('completedEvents').textContent = '0';
+}
+
+// Membina komponen kad acara secara dinamik ke dalam grid
 function renderRecentEvents(events) {
     const container = document.getElementById('recentEventsGrid');
     if (!container) return;
     
     if (!events || events.length === 0) {
-        container.innerHTML = '<div class="no-events">No events yet. <a href="add_event.jsp">Create your first event</a></div>';
+        container.innerHTML = '<div class="no-events" style="color: #888; padding: 20px;">No events found yet. <a href="EventServlet" style="color: #856404; font-weight: bold; text-decoration: underline;">Create your first event</a></div>';
         return;
     }
     
     container.innerHTML = '';
+    
+    // Ambil maksimum 3 acara sahaja untuk dipaparkan di grid hadapan
     events.slice(0, 3).forEach(event => {
         const eventCard = document.createElement('div');
         eventCard.className = 'event-card';
         eventCard.innerHTML = `
             <h3 class="event-name">${escapeHtml(event.name)}</h3>
             <div class="event-details">
-                <p><i class="fas fa-map-marker-alt"></i> ${escapeHtml(event.venue)}</p>
-                <p><i class="fas fa-calendar-day"></i> ${escapeHtml(event.date)}</p>
-                <p><i class="fas fa-clock"></i> ${escapeHtml(event.time)}</p>
+                <p><i class="fas fa-map-marker-alt"></i> Venue: ${escapeHtml(event.venue)}</p>
+                <p><i class="fas fa-calendar-day"></i> Date: ${escapeHtml(event.date)}</p>
+                <p><i class="fas fa-clock"></i> Time: ${escapeHtml(event.time)}</p>
             </div>
-            <a href="event_details.jsp?id=${event.id}" class="details-link">View Details <i class="fas fa-arrow-right"></i></a>
+            <a href="event_details.jsp?id=${event.id}" class="details-link" style="display: inline-block; margin-top: 15px; text-decoration: none; color: #856404; font-weight: 500;">
+                View Details <i class="fas fa-arrow-right"></i>
+            </a>
         `;
         container.appendChild(eventCard);
     });
 }
 
-// Helper function to escape HTML
+// Fungsi keselamatan menghalang serangan XSS inject script pada form input teks
 function escapeHtml(text) {
     if (!text) return '';
     const div = document.createElement('div');

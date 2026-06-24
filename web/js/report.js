@@ -1,6 +1,6 @@
 /**
  * Report Page JavaScript
- * Handle charts, filters, and exports
+ * Handle charts, filters, and exports with Live MySQL Database Data
  */
 
 let attendanceChart, reservationChart, trendChart, pieChart;
@@ -11,7 +11,7 @@ document.addEventListener('DOMContentLoaded', function() {
     setDefaultDates();
 });
 
-// Navigation
+// Menguruskan navigasi menu tepi (Sidebar)
 function initNavigation() {
     const navDashboard = document.getElementById('navDashboard');
     const navHall = document.getElementById('navHall');
@@ -22,11 +22,13 @@ function initNavigation() {
     if (navDashboard) navDashboard.onclick = () => window.location.href = 'staff_dashboard.jsp';
     if (navHall) navHall.onclick = () => window.location.href = 'hall.jsp';
     if (navStaff) navStaff.onclick = () => window.location.href = 'staff.jsp';
-    if (navReport) navReport.onclick = () => window.location.href = 'report.jsp';
-    if (navReservation) navReservation.onclick = () => window.location.href = 'event_list.jsp';
+    
+    // Menu Report wajib melalui Servlet Controller untuk memuatkan data dari DB
+    if (navReport) navReport.onclick = () => window.location.href = 'ReportServlet';
+    if (navReservation) navReservation.onclick = () => window.location.href = 'EventListServlet';
 }
 
-// Set default date range (last 12 months)
+// Menetapkan julat tarikh lalai secara automatik (12 bulan lepas)
 function setDefaultDates() {
     const today = new Date();
     const lastYear = new Date(today.getFullYear() - 1, today.getMonth(), 1);
@@ -42,9 +44,11 @@ function setDefaultDates() {
     }
 }
 
-// Initialize all charts
+// Fungsi utama membina kesemua 4 carta grafik Chart.js
 function initCharts() {
-    // Chart 1: Event Attendance (Bar Chart)
+    // ----------------------------------------------------
+    // CARTA 1: Event Attendance Report (Bar Chart)
+    // ----------------------------------------------------
     const attendanceCtx = document.getElementById('attendanceChart').getContext('2d');
     attendanceChart = new Chart(attendanceCtx, {
         type: 'bar',
@@ -52,7 +56,7 @@ function initCharts() {
             labels: window.months,
             datasets: [{
                 label: 'Attendees',
-                data: window.monthlyAttendance,
+                data: window.monthlyAttendance, // 🎯 Live data jumlah peserta dari DB
                 backgroundColor: 'rgba(212, 192, 168, 0.6)',
                 borderColor: '#d4c0a8',
                 borderWidth: 1,
@@ -73,17 +77,18 @@ function initCharts() {
         }
     });
 
-    // Chart 2: Reservation & Hall Usage (Line Chart)
+    // ----------------------------------------------------
+    // CARTA 2: Reservation & Hall Usage (Line Chart)
+    // ----------------------------------------------------
     const reservationCtx = document.getElementById('reservationChart').getContext('2d');
-    const hallUsagePercent = [45, 60, 35, 25, 20];
     reservationChart = new Chart(reservationCtx, {
         type: 'line',
         data: {
-            labels: window.hallNames,
+            labels: window.hallNames, // 🎯 Live nama-nama dewan dari jadual halls
             datasets: [
                 {
                     label: 'Reservations',
-                    data: [28, 15, 12, 8, 10],
+                    data: window.hallReservations, // 🎯 Live bilangan tempahan dari DB
                     borderColor: '#d4c0a8',
                     backgroundColor: 'rgba(212, 192, 168, 0.1)',
                     tension: 0.4,
@@ -91,7 +96,7 @@ function initCharts() {
                 },
                 {
                     label: 'Hall Usage %',
-                    data: hallUsagePercent,
+                    data: window.hallUsagePercent, // 🎯 Live anggaran peratus penggunaan dewan
                     borderColor: '#b87c5a',
                     backgroundColor: 'rgba(184, 124, 90, 0.1)',
                     tension: 0.4,
@@ -102,11 +107,15 @@ function initCharts() {
         options: {
             responsive: true,
             maintainAspectRatio: false,
-            plugins: { tooltip: { callbacks: { label: (ctx) => `${ctx.dataset.label}: ${ctx.raw}` } } }
+            plugins: { 
+                tooltip: { callbacks: { label: (ctx) => `${ctx.dataset.label}: ${ctx.raw}` } } 
+            }
         }
     });
 
-    // Chart 3: Event Trends (Area Chart)
+    // ----------------------------------------------------
+    // CARTA 3: Event Trends (Area Chart)
+    // ----------------------------------------------------
     const trendCtx = document.getElementById('trendChart').getContext('2d');
     trendChart = new Chart(trendCtx, {
         type: 'line',
@@ -114,7 +123,7 @@ function initCharts() {
             labels: window.trendMonths,
             datasets: [{
                 label: 'Events Created',
-                data: window.eventTrends,
+                data: window.eventTrends, // 🎯 Live trend penaikan tempahan acara
                 borderColor: '#d4c0a8',
                 backgroundColor: 'rgba(212, 192, 168, 0.3)',
                 tension: 0.3,
@@ -132,14 +141,24 @@ function initCharts() {
         }
     });
 
-    // Chart 4: Pie Chart - Event Distribution
+    // ----------------------------------------------------
+    // CARTA 4: Pie Chart - Event Distribution
+    // ----------------------------------------------------
     const pieCtx = document.getElementById('pieChart').getContext('2d');
+    
+    // Kira anggaran total untuk paparan peratusan pada label
+    const totalPieEvents = window.pieData.reduce((a, b) => a + b, 0) || 1;
+
     pieChart = new Chart(pieCtx, {
         type: 'pie',
         data: {
-            labels: ['Completed (73)', 'Upcoming (578)', 'Ongoing (45)'],
+            labels: [
+                `Completed (${window.pieData[0]})`, 
+                `Upcoming (${window.pieData[1]})`, 
+                `Ongoing (${window.pieData[2]})`
+            ],
             datasets: [{
-                data: [73, 578, 45],
+                data: window.pieData, // 🎯 Live pembahagian status acara [Completed, Upcoming, Ongoing]
                 backgroundColor: ['#d4c0a8', '#b87c5a', '#bcab99'],
                 borderWidth: 0
             }]
@@ -149,13 +168,17 @@ function initCharts() {
             maintainAspectRatio: false,
             plugins: {
                 legend: { position: 'bottom' },
-                tooltip: { callbacks: { label: (ctx) => `${ctx.label}: ${ctx.raw} events (${Math.round(ctx.raw / 696 * 100)}%)` } }
+                tooltip: { 
+                    callbacks: { 
+                        label: (ctx) => `${ctx.label}: ${ctx.raw} events (${Math.round(ctx.raw / totalPieEvents * 100)}%)` 
+                    } 
+                }
             }
         }
     });
 }
 
-// Update reports with new date range
+// Fungsi tapis mengikut pilihan bulan (Sedia dipautkan dengan backend jika ada)
 function updateReports() {
     const startMonth = document.getElementById('startMonth').value;
     const endMonth = document.getElementById('endMonth').value;
@@ -165,19 +188,17 @@ function updateReports() {
         return;
     }
     
-    // Simulate loading new data
-    showToast('Updating reports...', 'info');
+    showToast('Updating reports from database...', 'info');
     
-    // In real application, fetch new data from server
+    // Muatkan semula halaman bersama parameter tarikh untuk ditangkap oleh ReportServlet
     setTimeout(() => {
-        showToast('Reports updated successfully!', 'success');
-    }, 1000);
+        window.location.href = `ReportServlet?start=${startMonth}&end=${endMonth}`;
+    }, 800);
 }
 
-// Export report as PDF/CSV
+// Fungsi mengeksport laporan dokumen
 function exportReport() {
     const format = confirm('Export as CSV? Click OK for CSV, Cancel for Print');
-    
     if (format) {
         exportToCSV();
     } else {
@@ -185,42 +206,33 @@ function exportReport() {
     }
 }
 
-// Export table data to CSV
+// Logik menukar data metrik ke bentuk fail CSV untuk dimuat turun
 function exportToCSV() {
-    const rows = document.querySelectorAll('.report-table tr');
     let csv = [];
+    csv.push("Live SRMS Database Metrik Report");
+    csv.push(`Generated Date,${new Date().toLocaleString()}`);
+    csv.push("");
     
-    rows.forEach(row => {
-        const cells = row.querySelectorAll('th, td');
-        const rowData = Array.from(cells).map(cell => cell.textContent.trim());
-        csv.push(rowData.join(','));
+    // Ambil nilai dari kad statistik di halaman web secara dinamik
+    const cards = document.querySelectorAll('.stat-card');
+    csv.push("Metric Title,Current Live Total");
+    cards.forEach(card => {
+        const title = card.querySelector('h3').textContent.trim();
+        const value = card.querySelector('.stat-number').textContent.trim();
+        csv.push(`"${title}",${value}`);
     });
     
     const blob = new Blob([csv.join('\n')], { type: 'text/csv' });
     const url = URL.createObjectURL(blob);
     const a = document.createElement('a');
     a.href = url;
-    a.download = `report_${new Date().toISOString().slice(0, 10)}.csv`;
+    a.download = `srms_live_report_${new Date().toISOString().slice(0, 10)}.csv`;
     a.click();
     URL.revokeObjectURL(url);
     showToast('Report exported successfully!', 'success');
 }
 
-// Toggle details table visibility
-function toggleDetails() {
-    const table = document.getElementById('detailsTable');
-    const btn = document.querySelector('.view-all i');
-    
-    if (table.style.display === 'none') {
-        table.style.display = 'block';
-        btn.className = 'fas fa-chevron-up';
-    } else {
-        table.style.display = 'none';
-        btn.className = 'fas fa-chevron-down';
-    }
-}
-
-// Show toast notification
+// Fungsi memaparkan kotak notifikasi kecil (Toast)
 function showToast(message, type) {
     let toast = document.querySelector('.toast-notification');
     if (!toast) {

@@ -1,7 +1,11 @@
+<%-- Bahagian Atas Sekali Fail cust_dashboard.jsp --%>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%
     String loggedInUser = (String) session.getAttribute("loggedInUser");
-    if (loggedInUser == null || !"customer".equals(loggedInUser)) {
+    String userRole = (String) session.getAttribute("userRole");
+
+    // Semak jika user belum login ATAU peranan bukan customer
+    if (loggedInUser == null || !"customer".equalsIgnoreCase(userRole)) {
         response.sendRedirect("login.jsp");
         return;
     }
@@ -26,7 +30,7 @@
         <div class="header-right">
             <div class="vertical-divider"></div>
             <div class="customer-info">
-                <span class="customer-name"><i class="fas fa-user"></i> [<%= loggedInUser %>]</span>
+                <span class="customer-name"><i class="fas fa-user"></i> <%= loggedInUser %></span>
                 <a href="logout.jsp" class="logout-link"><i class="fas fa-sign-out-alt"></i> Logout</a>
             </div>
         </div>
@@ -38,7 +42,7 @@
         <div class="sidebar">
             <div class="logo-section">
                 <h2>SRMS</h2>
-                <div class="logo-sub">STAFF PORTAL</div>
+                <div class="logo-sub">CUSTOMER  PORTAL</div>
             </div>
             
             <nav class="sidebar-nav">
@@ -66,7 +70,7 @@
         <div class="content-area">
             <!-- Welcome Section -->
             <div class="welcome-section">
-                <h1>WELCOME!</h1>
+                <h1>WELCOME,<%= loggedInUser.toUpperCase() %></h1>
             </div>
 
             <!-- Stats Cards -->
@@ -77,9 +81,9 @@
                     <p class="stat-number" id="totalEvents">0</p>
                 </div>
                 <div class="stat-card">
-                    <i class="fas fa-users"></i>
-                    <h3>Total Attendees</h3>
-                    <p class="stat-number" id="totalAttendees">0</p>
+                    <i class="fas fa-clock"></i>
+                    <h3>Upcoming</h3>
+                    <p class="stat-number" id="Upcoming">0</p>
                 </div>
                 <div class="stat-card">
                     <i class="fas fa-check-circle"></i>
@@ -99,6 +103,7 @@
     </div>
 </div>
 
-<script src="js/cust_dashboard.js"></script>
+<script src="js/cust_dashboard.js?v=2.0"></script>
+</body>
 </body>
 </html>

@@ -3,7 +3,53 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/C:/Users/User/OneDrive/Desktop/UMT/SEMESTER%204/WEB%20APP/ASSIGNMENT/SRMS/SRMS/web/index.html</file>
+            <file>file:/C:/myProgramfiles/csm3023_S74699/SRMS/SRMS/src/java/com/controller/EventListServlet.java</file>
+            <file>file:/C:/myProgramfiles/csm3023_S74699/SRMS/SRMS/src/java/com/controller/RegistrationServlet.java</file>
+            <file>file:/C:/myProgramfiles/csm3023_S74699/SRMS/SRMS/web/js/event_details.js</file>
+            <file>file:/C:/myProgramfiles/csm3023_S74699/SRMS/SRMS/web/js/register_attendee.js</file>
+            <file>file:/C:/myProgramfiles/csm3023_S74699/SRMS/SRMS/web/js/event_list.js</file>
+            <file>file:/C:/myProgramfiles/csm3023_S74699/SRMS/SRMS/web/add_event.jsp</file>
+            <file>file:/C:/myProgramfiles/csm3023_S74699/SRMS/SRMS/web/register_attendee.jsp</file>
+            <file>file:/C:/myProgramfiles/csm3023_S74699/SRMS/SRMS/src/java/com/controller/AttendanceServlet.java</file>
+            <file>file:/C:/myProgramfiles/csm3023_S74699/SRMS/SRMS/src/java/com/controller/ReportServlet.java</file>
+            <file>file:/C:/myProgramfiles/csm3023_S74699/SRMS/SRMS/src/java/com/DAO/UserDAO.java</file>
+            <file>file:/C:/myProgramfiles/csm3023_S74699/SRMS/SRMS/web/staff.jsp</file>
+            <file>file:/C:/myProgramfiles/csm3023_S74699/SRMS/SRMS/web/css/staff_dashboard.css</file>
+            <file>file:/C:/myProgramfiles/csm3023_S74699/SRMS/SRMS/web/staff_dashboard.jsp</file>
+            <file>file:/C:/myProgramfiles/csm3023_S74699/SRMS/SRMS/web/staff_ajax.jsp</file>
+            <file>file:/C:/myProgramfiles/csm3023_S74699/SRMS/SRMS/web/report.jsp</file>
+            <file>file:/C:/myProgramfiles/csm3023_S74699/SRMS/SRMS/web/js/attendance.js</file>
+            <file>file:/C:/myProgramfiles/csm3023_S74699/SRMS/SRMS/src/java/com/model/ReportData.java</file>
+            <file>file:/C:/myProgramfiles/csm3023_S74699/SRMS/SRMS/web/WEB-INF/web.xml</file>
+            <file>file:/C:/myProgramfiles/csm3023_S74699/SRMS/SRMS/src/java/com/controller/SignupServlet.java</file>
+            <file>file:/C:/myProgramfiles/csm3023_S74699/SRMS/SRMS/web/js/staff_dashboard.js</file>
+            <file>file:/C:/myProgramfiles/csm3023_S74699/SRMS/SRMS/web/css/add_event.css</file>
+            <file>file:/C:/myProgramfiles/csm3023_S74699/SRMS/SRMS/src/java/com/model/Event.java</file>
+            <file>file:/C:/myProgramfiles/csm3023_S74699/SRMS/SRMS/web/logout.jsp</file>
+            <file>file:/C:/myProgramfiles/csm3023_S74699/SRMS/SRMS/web/hall_ajax.jsp</file>
+            <file>file:/C:/myProgramfiles/csm3023_S74699/SRMS/SRMS/web/get_dashboard_data.jsp</file>
+            <file>file:/C:/myProgramfiles/csm3023_S74699/SRMS/SRMS/web/event_list.jsp</file>
+            <file>file:/C:/myProgramfiles/csm3023_S74699/SRMS/SRMS/web/hall.jsp</file>
+            <file>file:/C:/myProgramfiles/csm3023_S74699/SRMS/SRMS/web/signup.jsp</file>
+            <file>file:/C:/myProgramfiles/csm3023_S74699/SRMS/SRMS/web/index.html</file>
+            <file>file:/C:/myProgramfiles/csm3023_S74699/SRMS/SRMS/nbproject/project.properties</file>
+            <file>file:/C:/myProgramfiles/csm3023_S74699/SRMS/SRMS/web/event_details.jsp</file>
+            <file>file:/C:/myProgramfiles/csm3023_S74699/SRMS/SRMS/src/java/com/model/User.java</file>
+            <file>file:/C:/myProgramfiles/csm3023_S74699/SRMS/SRMS/web/js/staff_management.js</file>
+            <file>file:/C:/myProgramfiles/csm3023_S74699/SRMS/SRMS/src/java/com/DAO/ReportDAO.java</file>
+            <file>file:/C:/myProgramfiles/csm3023_S74699/SRMS/SRMS/web/css/report.css</file>
+            <file>file:/C:/myProgramfiles/csm3023_S74699/SRMS/SRMS/web/js/cust_dashboard.js</file>
+            <file>file:/C:/myProgramfiles/csm3023_S74699/SRMS/SRMS/web/login.jsp</file>
+            <file>file:/C:/myProgramfiles/csm3023_S74699/SRMS/SRMS/web/generate_link.jsp</file>
+            <file>file:/C:/myProgramfiles/csm3023_S74699/SRMS/SRMS/src/java/com/controller/EventServlet.java</file>
+            <file>file:/C:/myProgramfiles/csm3023_S74699/SRMS/SRMS/web/js/script.js</file>
+            <file>file:/C:/myProgramfiles/csm3023_S74699/SRMS/SRMS/web/cust_dashboard.jsp</file>
+            <file>file:/C:/myProgramfiles/csm3023_S74699/SRMS/SRMS/web/js/hall.js</file>
+            <file>file:/C:/myProgramfiles/csm3023_S74699/SRMS/SRMS/src/java/com/model/Hall.java</file>
+            <file>file:/C:/myProgramfiles/csm3023_S74699/SRMS/SRMS/web/js/report.js</file>
+            <file>file:/C:/myProgramfiles/csm3023_S74699/SRMS/SRMS/web/css/attendance.css</file>
+            <file>file:/C:/myProgramfiles/csm3023_S74699/SRMS/SRMS/src/java/com/controller/LoginServlet.java</file>
+            <file>file:/C:/myProgramfiles/csm3023_S74699/SRMS/SRMS/web/attendance.jsp</file>
         </group>
     </open-files>
 </project-private>

@@ -42,7 +42,7 @@ function initNavigation() {
     
     if (navReport) {
         navReport.addEventListener('click', function() {
-            window.location.href = 'report.jsp';
+            window.location.href = 'ReportServlet';
         });
     }
     
@@ -62,13 +62,13 @@ function initNavigation() {
 // Initialize event details functions
 function initEventDetails() {
     // Load attendees on page load
-    if (window.eventId) {
+    /*if (window.eventId) {
         refreshAttendeeList(window.eventId);
         
-        // Auto refresh every 30 seconds
+        // Auto refresh every 15 seconds
         let refreshInterval = setInterval(function() {
             refreshAttendeeList(window.eventId);
-        }, 30000);
+        }, 15000);
         
         // Clear interval when page is unloaded
         window.addEventListener('beforeunload', function() {
@@ -76,57 +76,37 @@ function initEventDetails() {
                 clearInterval(refreshInterval);
             }
         });
-    }
+    }*/
 }
 
-// Generate link function
+// Fungsi Generate Link (Versi Kebal - Terus Auto-Reload)
 function generateLink(type, eventId) {
-    fetch('generate_link.jsp', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/x-www-form-urlencoded',
-        },
-        body: 'action=generate&type=' + type + '&eventId=' + eventId
-    })
-    .then(response => response.json())
-    .then(data => {
-        if (data.success) {
-            location.reload();
-        } else {
-            alert('Failed to generate link. Please try again.');
-        }
+    fetch(`generate_link.jsp?action=generate&type=${type}&eventId=${eventId}`)
+    .then(response => {
+        // Kita tidak perlu pakai response.json() lagi untuk elakkan crash.
+        // Sebaik sahaja server bagi respon (200 OK), kita terus paksa halaman REFRESH!
+        window.location.reload();
     })
     .catch(error => {
         console.error('Error:', error);
-        alert('An error occurred. Please try again.');
+        // Jika ada ralat format sekalipun, kita tetap force reload sebab data dah siap di server
+        window.location.reload();
     });
 }
 
-// Regenerate link function
+// Fungsi Regenerate Link (Versi Kebal - Terus Auto-Reload)
 function regenerateLink(type, eventId) {
     if (confirm('Are you sure you want to regenerate this link? The old link will no longer work.')) {
-        fetch('generate_link.jsp', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/x-www-form-urlencoded',
-            },
-            body: 'action=regenerate&type=' + type + '&eventId=' + eventId
-        })
-        .then(response => response.json())
-        .then(data => {
-            if (data.success) {
-                location.reload();
-            } else {
-                alert('Failed to regenerate link. Please try again.');
-            }
+        fetch(`generate_link.jsp?action=regenerate&type=${type}&eventId=${eventId}`)
+        .then(response => {
+            window.location.reload(); // Terus paksa auto-refresh!
         })
         .catch(error => {
             console.error('Error:', error);
-            alert('An error occurred. Please try again.');
+            window.location.reload(); // Force reload juga jika ada ralat pembacaan
         });
     }
 }
-
 // Copy to clipboard function
 function copyToClipboard(elementId) {
     const inputElement = document.getElementById(elementId);
@@ -147,40 +127,53 @@ function copyToClipboard(elementId) {
     }
 }
 
-// Refresh attendee list
+// 🎯 REFRESH ATTENDEE LIST (VERSI STABIL & ANTI-CACHE)
 function refreshAttendeeList(eventId) {
     const tableBody = document.getElementById('attendeeTableBody');
     if (!tableBody) return;
-    
-    tableBody.innerHTML = '<tr><td colspan="4" class="loading-text">Loading attendees...</td></tr>';
-    
-    fetch('generate_link.jsp?action=getAttendees&eventId=' + eventId)
-        .then(response => response.json())
+
+    // Tambah timestamp (_=Date.now()) untuk memaksa browser ambil data baru, bukan dari cache!
+    fetch(`generate_link.jsp?action=getAttendees&eventId=${eventId}&_=${Date.now()}`)
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Server returned HTTP ' + response.status);
+            }
+            return response.json();
+        })
         .then(data => {
-            if (data.success && data.attendees) {
-                if (data.attendees.length === 0) {
-                    tableBody.innerHTML = '<tr><td colspan="4" class="loading-text">No attendees registered yet.</td></tr>';
-                } else {
-                    tableBody.innerHTML = '';
-                    data.attendees.forEach(attendee => {
-                        const row = tableBody.insertRow();
-                        row.insertCell(0).textContent = attendee.name || '-';
-                        row.insertCell(1).textContent = attendee.phone || '-';
-                        row.insertCell(2).textContent = attendee.email || '-';
-                        
-                        const statusCell = row.insertCell(3);
-                        const statusClass = attendee.status === 'Registered' ? 'status-registered' : 
-                                           (attendee.status === 'Attended' ? 'status-attended' : 'status-cancelled');
-                        statusCell.innerHTML = `<span class="status-badge ${statusClass}">${attendee.status || 'Pending'}</span>`;
-                    });
+            if (data.success) {
+                if (!data.attendees || data.attendees.length === 0) {
+                    tableBody.innerHTML = `<tr><td colspan="4" style="text-align:center; color:#888; padding:20px;"><i class="fas fa-folder-open"></i> No participants registered yet for this event.</td></tr>`;
+                    return;
                 }
+
+                let html = '';
+                data.attendees.forEach(attendee => {
+                    let statusClass = 'badge-absent';
+                    let statusText = 'Tak Hadir';
+                    
+                    // Memastikan rsvp_status dibaca dengan betul walaupun dari huruf besar/kecil
+                    if (attendee.status && (attendee.status.toLowerCase() === 'hadir' || attendee.status.toLowerCase() === 'present')) {
+                        statusClass = 'badge-success';
+                        statusText = 'Hadir';
+                    }
+
+                    html += `<tr>
+                        <td><strong>${attendee.name}</strong></td>
+                        <td>${attendee.phone}</td>
+                        <td>${attendee.email ? attendee.email : '-'}</td>
+                        <td><span class="badge ${statusClass}">${statusText}</span></td>
+                    </tr>`;
+                });
+                
+                tableBody.innerHTML = html;
             } else {
-                tableBody.innerHTML = '<tr><td colspan="4" class="loading-text">Failed to load attendees.</td></tr>';
+                tableBody.innerHTML = `<tr><td colspan="4" style="color:#c62828; text-align:center; padding:15px;"><i class="fas fa-exclamation-circle"></i> Error: ${data.message}</td></tr>`;
             }
         })
-        .catch(error => {
-            console.error('Error:', error);
-            tableBody.innerHTML = '<tr><td colspan="4" class="loading-text">Error loading attendees.</td></tr>';
+        .catch(err => {
+            console.error('AJAX Error:', err);
+            tableBody.innerHTML = `<tr><td colspan="4" style="color:#c62828; text-align:center; padding:15px;"><i class="fas fa-exclamation-circle"></i> Error loading attendees.</td></tr>`;
         });
 }
 

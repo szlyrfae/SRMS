@@ -4,7 +4,8 @@
     String loggedInUser = (String) session.getAttribute("loggedInUser");
     String userRole = (String) session.getAttribute("userRole");
     
-    if (loggedInUser == null || !"staff".equals(loggedInUser)) {
+    // 1. PEMBETULAN: Semak userRole menggunakan equalsIgnoreCase untuk mengelakkan ralat tendang ke login.jsp
+    if (loggedInUser == null || !"staff".equalsIgnoreCase(userRole)) {
         response.sendRedirect("login.jsp");
         return;
     }
@@ -54,7 +55,6 @@
 <body>
 
 <div class="dashboard">
-    <!-- Top Header -->
     <div class="top-header">
         <div class="header-left"></div>
         <div class="header-right">
@@ -66,9 +66,7 @@
         </div>
     </div>
 
-    <!-- Main Layout -->
     <div class="main-layout">
-        <!-- Sidebar -->
         <div class="sidebar">
             <div class="logo-section">
                 <h2>SRMS</h2>
@@ -102,7 +100,6 @@
 
         <div class="vertical-divider-line"></div>
 
-        <!-- Content Area -->
         <div class="content-area">
             <div class="page-header">
                 <h1><i class="fas fa-building"></i> HALL LIST</h1>
@@ -111,7 +108,6 @@
                 </button>
             </div>
 
-            <!-- Halls Table -->
             <div class="table-container">
                 <table class="hall-table" id="hallTable">
                     <thead>
@@ -149,8 +145,6 @@
     </div>
 </div>
 
-<!-- Add/Edit Hall Modal -->
-<!-- Modal structure -->
 <div id="hallModal" class="modal">
     <div class="modal-content">
         <div class="modal-header">
@@ -187,5 +181,21 @@
 </div>
 
 <script src="js/hall.js"></script>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const navDashboard = document.getElementById('navDashboard');
+        const navHall = document.getElementById('navHall');
+        const navStaff = document.getElementById('navStaff');
+        const navReport = document.getElementById('navReport');
+        const navReservation = document.getElementById('navReservation');
+
+        if (navDashboard) navDashboard.addEventListener('click', function() { window.location.href = 'staff_dashboard.jsp'; });
+        if (navHall) navHall.addEventListener('click', function() { window.location.href = 'hall.jsp'; });
+        if (navStaff) navStaff.addEventListener('click', function() { window.location.href = 'staff.jsp'; });
+        if (navReport) navReport.addEventListener('click', function() { window.location.href = 'ReportServlet'; });
+        if (navReservation) navReservation.addEventListener('click', function() { window.location.href = 'EventListServlet'; });
+    });
+</script>
 </body>
 </html>
